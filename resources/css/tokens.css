@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lexend:wght@700&display=swap');
+
+:root {
+  /* === WARNA IDENTITAS UTAMA (Brand Guideline PTKP - Peruri Security Paper Mill) === */
+  --color-navy: #20288E;         /* Peruri Navy: brand primer, headings, primary buttons, active states */
+  --color-violet: #D861FF;       /* Spark Violet: aksen pancaran cahaya, HANYA di atas latar gelap */
+  --color-deep-navy: #141A5C;    /* Deep Navy: sidebar, dark header, hover state button primer */
+  --color-mist: #EEF0FB;         /* Mist: background halaman, kartu sekunder, input disabled */
+  --color-white: #FFFFFF;        /* Latar kartu, form, konten */
+  --color-text: #20288E;         /* Teks heading utama */
+  --color-text-body: #1A1A2E;    /* Teks body/paragraf & label */
+  --color-border: rgba(32, 40, 142, 0.14); /* Garis border elemen & divider */
+
+  /* === WARNA NOTIFIKASI SEMANTIK (Disetujui untuk Enterprise PTKP) === */
+  --color-success: #166534;      /* Hijau Tua Konservatif WCAG AAA */
+  --color-success-bg: #DCFCE7;
+  --color-warning: #854D0E;      /* Kuning/Cokelat Tua */
+  --color-warning-bg: #FEF9C3;
+  --color-error: #991B1B;        /* Merah Tua Konservatif */
+  --color-error-bg: #FEE2E2;
+  --color-neutral: #475569;      /* Slate/Abu Netral */
+  --color-neutral-bg: #F1F5F9;
+  --color-info: #20288E;         /* Peruri Navy */
+  --color-info-bg: #EEF0FB;      /* Mist */
+
+  /* === TIPOGRAFI === */
+  --font-heading: 'Lexend', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Ukuran font berbasis kelipatan 4px */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+  --text-3xl: 40px;
+
+  /* === SPACING SCALE (Kelipatan 4px) === */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* === BORDER RADIUS === */
+  --radius-sm: 4px;              /* Default: tombol, input, kartu */
+  --radius-md: 8px;              /* Modal, panel besar, drawer */
+  --radius-pill: 999px;          /* HANYA badge dan tag */
+
+  /* === BAYANGAN (SHADOW) === */
+  --shadow-flat: 0 0 0 1px var(--color-border);
+  --shadow-raised: 0 2px 8px rgba(32, 40, 142, 0.14);
+}

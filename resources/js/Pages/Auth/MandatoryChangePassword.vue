@@ -1,80 +1,125 @@
 <script setup lang="ts">
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import AppInput from '@/Components/AppInput.vue';
+import AppButton from '@/Components/AppButton.vue';
+import AppAlert from '@/Components/AppAlert.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
-    current_password: '',
-    password: '',
-    password_confirmation: '',
+  current_password: '',
+  password: '',
+  password_confirmation: '',
 });
 
 const submit = () => {
-    form.post(route('password.mandatory.update'), {
-        onFinish: () => {
-            form.reset('current_password', 'password', 'password_confirmation');
-        },
-    });
+  form.post(route('password.mandatory.update'), {
+    onFinish: () => {
+      form.reset('current_password', 'password', 'password_confirmation');
+    },
+  });
 };
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Wajib Perbarui Password" />
+  <GuestLayout>
+    <Head title="Wajib Perbarui Password" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            Demi keamanan akun internal PT Kertas Padalarang, Anda wajib mengganti password default Anda sebelum dapat melanjutkan ke sistem.
-        </div>
+    <div class="mandatory-header">
+      <h2 class="mandatory-title">Wajib Perbarui Kata Sandi</h2>
+      <p class="mandatory-subtitle">
+        Akun Anda memerlukan pembaruan kata sandi sebelum dapat mengakses fitur sistem.
+      </p>
+    </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="current_password" value="Password Saat Ini (Default)" />
-                <TextInput
-                    id="current_password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.current_password"
-                    required
-                    autofocus
-                    autocomplete="current-password"
-                />
-                <InputError class="mt-2" :message="form.errors.current_password" />
-            </div>
+    <div class="alert-box">
+      <AppAlert variant="warning">
+        Demi keamanan akun internal PT Kertas Padalarang, Anda wajib mengganti password default Anda.
+      </AppAlert>
+    </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password Baru" />
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+    <form @submit.prevent="submit" class="mandatory-form">
+      <AppInput
+        id="current_password"
+        type="password"
+        label="Kata Sandi Saat Ini"
+        placeholder="Masukkan kata sandi lama Anda"
+        v-model="form.current_password"
+        :error="form.errors.current_password"
+        required
+        autofocus
+      />
 
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Konfirmasi Password Baru" />
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
+      <AppInput
+        id="password"
+        type="password"
+        label="Kata Sandi Baru"
+        placeholder="Minimal 8 karakter aman"
+        v-model="form.password"
+        :error="form.errors.password"
+        required
+      />
 
-            <div class="mt-6 flex items-center justify-end">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Simpan & Lanjutkan
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
+      <AppInput
+        id="password_confirmation"
+        type="password"
+        label="Konfirmasi Kata Sandi Baru"
+        placeholder="Ulangi kata sandi baru"
+        v-model="form.password_confirmation"
+        :error="form.errors.password_confirmation"
+        required
+      />
+
+      <div class="actions-row">
+        <AppButton
+          type="submit"
+          variant="primary"
+          size="lg"
+          :loading="form.processing"
+          class="submit-button"
+        >
+          Simpan & Masuk ke Sistem
+        </AppButton>
+      </div>
+    </form>
+  </GuestLayout>
 </template>
+
+<style scoped>
+.mandatory-header {
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+
+.mandatory-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.mandatory-subtitle {
+  margin: var(--space-1) 0 0 0;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: #64748b;
+}
+
+.alert-box {
+  margin-bottom: var(--space-4);
+}
+
+.mandatory-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.actions-row {
+  margin-top: var(--space-2);
+}
+
+.submit-button {
+  width: 100%;
+}
+</style>
