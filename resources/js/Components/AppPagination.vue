@@ -35,28 +35,33 @@ const hasMeta = computed(() => props.total !== undefined);
 </script>
 
 <template>
-  <div class="app-pagination-wrapper">
-    <div v-if="hasMeta" class="pagination-meta">
+  <div class="flex items-center justify-between w-full gap-4 flex-wrap">
+    <div v-if="hasMeta" class="font-body text-xs text-slate-500">
       Menampilkan
-      <span class="meta-highlight">{{ from || 0 }}</span>
+      <span class="font-semibold text-ptkp-body">{{ from || 0 }}</span>
       sampai
-      <span class="meta-highlight">{{ to || 0 }}</span>
+      <span class="font-semibold text-ptkp-body">{{ to || 0 }}</span>
       dari
-      <span class="meta-highlight">{{ total }}</span>
+      <span class="font-semibold text-ptkp-body">{{ total }}</span>
       data
     </div>
 
-    <nav v-if="links && links.length > 3" class="pagination-nav" aria-label="Navigasi Halaman">
+    <nav v-if="links && links.length > 3" class="inline-flex items-center gap-1" aria-label="Navigasi Halaman">
       <template v-for="(link, index) in links" :key="index">
         <span
           v-if="!link.url"
-          class="pagination-item is-disabled"
+          class="inline-flex items-center justify-center min-w-[32px] h-8 px-2 font-body text-xs font-medium rounded-sm opacity-40 cursor-not-allowed text-slate-400"
           v-html="cleanLabel(link.label)"
         />
         <Link
           v-else
           :href="link.url"
-          :class="['pagination-item', { 'is-active': link.active }]"
+          :class="[
+            'inline-flex items-center justify-center min-w-[32px] h-8 px-2.5 font-body text-xs rounded-sm border transition-colors',
+            link.active
+              ? 'bg-ptkp-navy border-ptkp-navy text-white font-bold'
+              : 'bg-white border-ptkp-border text-ptkp-body font-medium hover:bg-ptkp-mist hover:border-ptkp-navy hover:text-ptkp-navy'
+          ]"
           :aria-current="link.active ? 'page' : undefined"
           preserve-scroll
           v-html="cleanLabel(link.label)"
@@ -65,69 +70,3 @@ const hasMeta = computed(() => props.total !== undefined);
     </nav>
   </div>
 </template>
-
-<style scoped>
-.app-pagination-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: var(--space-4);
-  flex-wrap: wrap;
-}
-
-.pagination-meta {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  color: #64748b;
-}
-
-.meta-highlight {
-  font-weight: 600;
-  color: var(--color-text-body);
-}
-
-.pagination-nav {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.pagination-item {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  height: 32px;
-  padding: 0 var(--space-2);
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  font-weight: 500;
-  text-decoration: none;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background-color: var(--color-white);
-  color: var(--color-text-body);
-  transition: all 0.15s ease;
-}
-
-.pagination-item:hover:not(.is-disabled):not(.is-active) {
-  background-color: var(--color-mist);
-  border-color: var(--color-navy);
-  color: var(--color-navy);
-}
-
-.pagination-item.is-active {
-  background-color: var(--color-navy);
-  border-color: var(--color-navy);
-  color: var(--color-white);
-  font-weight: 700;
-}
-
-.pagination-item.is-disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-  background-color: transparent;
-  border-color: transparent;
-}
-</style>

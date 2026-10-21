@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use App\Modules\Platform\Models\Employee;
+use App\Modules\Platform\Models\UserRole;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -74,5 +78,21 @@ class User extends Authenticatable
             'is_active' => 'boolean',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * @return BelongsTo<Employee, $this>
+     */
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
+    }
+
+    /**
+     * @return HasMany<UserRole, $this>
+     */
+    public function userRoles(): HasMany
+    {
+        return $this->hasMany(UserRole::class, 'user_id');
     }
 }

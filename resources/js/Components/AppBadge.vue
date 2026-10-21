@@ -11,71 +11,43 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'md',
 });
 
-const variantClass = computed(() => `badge-${props.variant}`);
-const sizeClass = computed(() => `badge-${props.size}`);
+const variantClasses = computed(() => {
+  switch (props.variant) {
+    case 'violet':
+      return 'bg-ptkp-violet text-white';
+    case 'success':
+      return 'bg-ptkp-success-bg text-ptkp-success border border-green-700/20';
+    case 'warning':
+      return 'bg-ptkp-warning-bg text-ptkp-warning border border-amber-800/20';
+    case 'error':
+      return 'bg-ptkp-error-bg text-ptkp-error border border-red-800/20';
+    case 'neutral':
+      return 'bg-ptkp-neutral-bg text-ptkp-neutral border border-slate-600/20';
+    case 'navy':
+    default:
+      return 'bg-ptkp-navy text-white';
+  }
+});
+
+const sizeClasses = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 'px-2 py-0.5 text-[11px]';
+    case 'md':
+    default:
+      return 'px-2.5 py-1 text-xs';
+  }
+});
 </script>
 
 <template>
-  <span :class="['app-badge', variantClass, sizeClass]">
+  <span
+    :class="[
+      'inline-flex items-center justify-center gap-1 rounded-full font-body font-medium leading-none whitespace-nowrap',
+      variantClasses,
+      sizeClasses
+    ]"
+  >
     <slot />
   </span>
 </template>
-
-<style scoped>
-.app-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
-  border-radius: var(--radius-pill); /* SATU-SATUNYA komponen yang boleh pill */
-  font-family: var(--font-body);
-  font-weight: 500;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-/* Sizing */
-.badge-sm {
-  padding: 2px 8px;
-  font-size: 11px;
-}
-.badge-md {
-  padding: var(--space-1) var(--space-2);
-  font-size: var(--text-xs);
-}
-
-/* Variants */
-.badge-navy {
-  background-color: var(--color-navy);
-  color: var(--color-white);
-}
-
-.badge-violet {
-  background-color: var(--color-violet);
-  color: var(--color-white);
-}
-
-.badge-success {
-  background-color: var(--color-success-bg);
-  color: var(--color-success);
-  border: 1px solid rgba(22, 101, 52, 0.2);
-}
-
-.badge-warning {
-  background-color: var(--color-warning-bg);
-  color: var(--color-warning);
-  border: 1px solid rgba(133, 77, 14, 0.2);
-}
-
-.badge-error {
-  background-color: var(--color-error-bg);
-  color: var(--color-error);
-  border: 1px solid rgba(153, 27, 27, 0.2);
-}
-
-.badge-neutral {
-  background-color: var(--color-neutral-bg);
-  color: var(--color-neutral);
-  border: 1px solid rgba(71, 85, 105, 0.2);
-}
-</style>

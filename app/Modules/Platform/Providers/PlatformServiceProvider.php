@@ -10,9 +10,11 @@ use App\Modules\Platform\Contracts\NotificationServiceInterface;
 use App\Modules\Platform\Contracts\NumberingServiceInterface;
 use App\Modules\Platform\Contracts\UserResolverInterface;
 use App\Modules\Platform\Models\Employee;
+use App\Modules\Platform\Models\NumberingFormat;
 use App\Modules\Platform\Models\OrgUnit;
 use App\Modules\Platform\Models\Position;
 use App\Modules\Platform\Policies\EmployeePolicy;
+use App\Modules\Platform\Policies\NumberingFormatPolicy;
 use App\Modules\Platform\Policies\OrgUnitPolicy;
 use App\Modules\Platform\Policies\PositionPolicy;
 use App\Modules\Platform\Policies\UserPolicy;
@@ -52,5 +54,6 @@ class PlatformServiceProvider extends ServiceProvider
         Gate::policy(Position::class, PositionPolicy::class);
         Gate::policy(Employee::class, EmployeePolicy::class);
         Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(NumberingFormat::class, NumberingFormatPolicy::class);
     }
 }

@@ -29,18 +29,22 @@ const submit = () => {
   <GuestLayout>
     <Head title="Masuk ke Sistem" />
 
-    <div class="login-header">
-      <h2 class="login-title">Masuk ke Portal Internal</h2>
-      <p class="login-subtitle">Silakan masukkan nama pengguna atau email dinas Anda</p>
+    <div class="mb-5 text-center">
+      <h2 class="m-0 font-heading text-xl font-bold text-ptkp-navy">
+        Masuk ke Portal Internal
+      </h2>
+      <p class="mt-1 mb-0 font-body text-sm text-slate-500">
+        Silakan masukkan nama pengguna atau email dinas Anda
+      </p>
     </div>
 
-    <div v-if="status" class="status-alert">
+    <div v-if="status" class="mb-4">
       <AppAlert variant="success" dismissible>
         {{ status }}
       </AppAlert>
     </div>
 
-    <form @submit.prevent="submit" class="login-form">
+    <form @submit.prevent="submit" class="flex flex-col gap-4">
       <AppInput
         id="login"
         label="Nama Pengguna atau Email"
@@ -61,12 +65,12 @@ const submit = () => {
         required
       />
 
-      <div class="remember-row">
-        <label class="remember-label">
+      <div class="flex items-center justify-between text-xs">
+        <label class="flex items-center gap-2 cursor-pointer text-ptkp-body">
           <input
             type="checkbox"
             v-model="form.remember"
-            class="remember-checkbox"
+            class="rounded-sm border-ptkp-border text-ptkp-navy focus:ring-ptkp-navy"
           />
           <span>Ingat saya di perangkat ini</span>
         </label>
@@ -74,19 +78,19 @@ const submit = () => {
         <Link
           v-if="canResetPassword"
           :href="route('password.request')"
-          class="forgot-link"
+          class="text-ptkp-navy hover:underline font-medium"
         >
           Lupa kata sandi?
         </Link>
       </div>
 
-      <div class="actions-row">
+      <div class="mt-2">
         <AppButton
           type="submit"
           variant="primary"
           size="lg"
           :loading="form.processing"
-          class="submit-button"
+          class="w-full"
         >
           Masuk ke Sistem
         </AppButton>
@@ -94,72 +98,3 @@ const submit = () => {
     </form>
   </GuestLayout>
 </template>
-
-<style scoped>
-.login-header {
-  margin-bottom: var(--space-5);
-  text-align: center;
-}
-
-.login-title {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  color: var(--color-navy);
-}
-
-.login-subtitle {
-  margin: var(--space-1) 0 0 0;
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  color: #64748b;
-}
-
-.status-alert {
-  margin-bottom: var(--space-4);
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.remember-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: var(--text-xs);
-}
-
-.remember-label {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  cursor: pointer;
-  color: var(--color-text-body);
-}
-
-.remember-checkbox {
-  accent-color: var(--color-navy);
-  border-radius: 2px;
-}
-
-.forgot-link {
-  color: var(--color-navy);
-  text-decoration: none;
-  font-weight: 500;
-}
-.forgot-link:hover {
-  text-decoration: underline;
-}
-
-.actions-row {
-  margin-top: var(--space-2);
-}
-
-.submit-button {
-  width: 100%;
-}
-</style>

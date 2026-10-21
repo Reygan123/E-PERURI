@@ -20,32 +20,32 @@ const flash = computed(() => (page.props as any).flash || {});
 </script>
 
 <template>
-  <div class="app-layout-root">
+  <div class="flex min-h-screen w-full bg-ptkp-mist">
     <Head :title="title ? `${title} - PT Kertas Padalarang` : 'PT Kertas Padalarang'" />
 
     <!-- Sidebar Deep Navy -->
     <AppSidebar />
 
     <!-- Main Container -->
-    <div class="app-main-wrapper">
+    <div class="flex-1 flex flex-col min-w-0 overflow-x-hidden">
       <!-- Header -->
       <AppHeader :title="title" :breadcrumbs="breadcrumbs" />
 
       <!-- Content Area -->
-      <main class="app-content-area">
-        <div class="app-content-container">
+      <main class="flex-1 p-8 bg-ptkp-mist">
+        <div class="max-w-[1280px] mx-auto flex flex-col gap-6">
           <!-- Flash Notifications -->
-          <div v-if="flash.success" class="flash-banner">
+          <div v-if="flash.success" class="mb-2">
             <AppAlert variant="success" dismissible>
               {{ flash.success }}
             </AppAlert>
           </div>
-          <div v-if="flash.error" class="flash-banner">
+          <div v-if="flash.error" class="mb-2">
             <AppAlert variant="error" dismissible>
               {{ flash.error }}
             </AppAlert>
           </div>
-          <div v-if="flash.info" class="flash-banner">
+          <div v-if="flash.info" class="mb-2">
             <AppAlert variant="info" dismissible>
               {{ flash.info }}
             </AppAlert>
@@ -58,38 +58,3 @@ const flash = computed(() => (page.props as any).flash || {});
     </div>
   </div>
 </template>
-
-<style scoped>
-.app-layout-root {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  background-color: var(--color-mist);
-}
-
-.app-main-wrapper {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  overflow-x: hidden;
-}
-
-.app-content-area {
-  flex: 1 1 auto;
-  padding: var(--space-6); /* 32px */
-  background-color: var(--color-mist);
-}
-
-.app-content-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-}
-
-.flash-banner {
-  margin-bottom: var(--space-2);
-}
-</style>

@@ -11,78 +11,15 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div :class="['app-loading-state', { 'is-card': card }]">
-    <div class="skeleton-header">
-      <div class="skeleton-bar title-bar"></div>
-      <div class="skeleton-bar subtitle-bar"></div>
+  <div :class="['flex flex-col gap-4', card ? 'bg-white border border-ptkp-border rounded-sm p-6 shadow-flat' : '']">
+    <div class="flex flex-col gap-2">
+      <div class="h-5 w-1/3 bg-slate-200 rounded-sm animate-pulse"></div>
+      <div class="h-3.5 w-3/5 bg-slate-100 rounded-sm animate-pulse"></div>
     </div>
-    <div class="skeleton-body">
-      <div v-for="n in rows" :key="n" class="skeleton-row">
-        <div class="skeleton-bar row-bar"></div>
+    <div class="flex flex-col gap-3">
+      <div v-for="n in rows" :key="n" class="w-full">
+        <div class="h-10 w-full bg-slate-100 rounded-sm animate-pulse"></div>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.app-loading-state {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.is-card {
-  background-color: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: var(--space-5);
-}
-
-.skeleton-header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.skeleton-body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.skeleton-bar {
-  background: linear-gradient(
-    90deg,
-    var(--color-mist) 25%,
-    rgba(32, 40, 142, 0.08) 50%,
-    var(--color-mist) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: var(--radius-sm);
-}
-
-.title-bar {
-  height: 20px;
-  width: 35%;
-}
-
-.subtitle-bar {
-  height: 14px;
-  width: 60%;
-}
-
-.row-bar {
-  height: 38px;
-  width: 100%;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-</style>

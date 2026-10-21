@@ -22,16 +22,25 @@ class AuditService implements AuditServiceInterface
      * @param  string|null  $notes  Optional context notes
      */
     public function log(
-        string $module,
-        string $action,
-        string $auditableType,
-        string $auditableId,
+        string $module = 'platform',
+        string $action = '',
+        string $auditableType = '',
+        string $auditableId = '',
         ?array $oldValues = null,
         ?array $newValues = null,
-        ?string $notes = null
+        ?string $notes = null,
+        ?string $entityType = null,
+        ?string $entityId = null,
+        ?array $before = null,
+        ?array $after = null
     ): void {
         /** @var User|null $currentUser */
         $currentUser = Auth::user();
+
+        $resolvedType = $entityType ?: $auditableType;
+        $resolvedId = $entityId ?: $auditableId;
+        $resolvedBefore = $before ?? $oldValues;
+        $resolvedAfter = $after ?? $newValues;
 
         AuditLog::create([
             'id' => (string) Str::uuid(),
@@ -39,10 +48,10 @@ class AuditService implements AuditServiceInterface
             'employee_id' => $currentUser?->employee_id,
             'action' => strtoupper($action),
             'module' => strtolower($module),
-            'entity_type' => $auditableType,
-            'entity_id' => $auditableId,
-            'before' => $oldValues,
-            'after' => $newValues,
+            'entity_type' => $resolvedType,
+            'entity_id' => $resolvedId,
+            'before' => $resolvedBefore,
+            'after' => $resolvedAfter,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
             'created_at' => now(),

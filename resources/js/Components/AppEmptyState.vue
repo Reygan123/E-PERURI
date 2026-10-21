@@ -11,10 +11,10 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="app-empty-state">
+  <div class="flex flex-col items-center justify-center text-center py-12 px-6 bg-white border border-ptkp-border rounded-sm shadow-flat">
     <!-- Ilustrasi Geometri Atap Limas Warisan Pabrik PTKP -->
-    <div class="empty-illustration" aria-hidden="true">
-      <svg viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg" class="limas-svg">
+    <div class="w-28 h-20 mb-3" aria-hidden="true">
+      <svg viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
         <!-- Bayangan dasar -->
         <ellipse cx="60" cy="80" rx="45" ry="6" fill="#20288E" fill-opacity="0.08" />
         <!-- Dinding dasar -->
@@ -31,56 +31,15 @@ withDefaults(defineProps<Props>(), {
       </svg>
     </div>
 
-    <h3 class="empty-title">{{ title }}</h3>
-    <p class="empty-description">{{ description }}</p>
+    <h3 class="m-0 font-heading text-base font-bold text-ptkp-navy">
+      {{ title }}
+    </h3>
+    <p class="mt-1 mb-0 font-body text-sm text-slate-500 max-w-md">
+      {{ description }}
+    </p>
 
-    <div v-if="$slots.action" class="empty-action">
+    <div v-if="$slots.action" class="mt-4">
       <slot name="action" />
     </div>
   </div>
 </template>
-
-<style scoped>
-.app-empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: var(--space-7) var(--space-5);
-  background-color: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-}
-
-.empty-illustration {
-  width: 120px;
-  height: 90px;
-  margin-bottom: var(--space-3);
-}
-
-.limas-svg {
-  width: 100%;
-  height: 100%;
-}
-
-.empty-title {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-size: var(--text-base);
-  font-weight: 700;
-  color: var(--color-navy);
-}
-
-.empty-description {
-  margin: var(--space-1) 0 0 0;
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  color: #64748b;
-  max-width: 420px;
-}
-
-.empty-action {
-  margin-top: var(--space-4);
-}
-</style>

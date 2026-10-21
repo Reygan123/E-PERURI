@@ -25,28 +25,28 @@ const isLink = computed(() => Boolean(props.href));
 const variantClasses = computed(() => {
   switch (props.variant) {
     case 'secondary':
-      return 'btn-secondary';
+      return 'bg-transparent text-ptkp-navy border border-ptkp-navy hover:bg-ptkp-navy/5';
     case 'accent':
-      return 'btn-accent';
+      return 'bg-ptkp-violet text-white border border-ptkp-violet hover:bg-[#c447ee] hover:border-[#c447ee]';
     case 'text':
-      return 'btn-text';
+      return 'bg-transparent text-ptkp-navy border border-transparent hover:underline';
     case 'danger':
-      return 'btn-danger';
+      return 'bg-ptkp-error text-white border border-ptkp-error hover:bg-[#7f1d1d] hover:border-[#7f1d1d]';
     case 'primary':
     default:
-      return 'btn-primary';
+      return 'bg-ptkp-navy text-white border border-ptkp-navy hover:bg-ptkp-deep hover:border-ptkp-deep';
   }
 });
 
 const sizeClasses = computed(() => {
   switch (props.size) {
     case 'sm':
-      return 'btn-sm';
+      return 'px-3 py-1 text-xs min-h-[28px]';
     case 'lg':
-      return 'btn-lg';
+      return 'px-6 py-3 text-base min-h-[48px]';
     case 'md':
     default:
-      return 'btn-md';
+      return 'px-4 py-2 text-sm min-h-[38px]';
   }
 });
 </script>
@@ -55,12 +55,17 @@ const sizeClasses = computed(() => {
   <Link
     v-if="isLink"
     :href="href!"
-    :class="['app-button', variantClasses, sizeClasses, { 'is-disabled': disabled || loading }]"
+    :class="[
+      'inline-flex items-center justify-center gap-2 rounded-sm font-heading font-bold cursor-pointer transition-colors duration-150 whitespace-nowrap text-decoration-none',
+      variantClasses,
+      sizeClasses,
+      { 'opacity-50 cursor-not-allowed pointer-events-none': disabled || loading }
+    ]"
     :aria-disabled="disabled || loading"
   >
     <svg
       v-if="loading"
-      class="btn-spinner"
+      class="w-4 h-4 animate-spin text-current"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -78,11 +83,16 @@ const sizeClasses = computed(() => {
     v-else
     :type="type"
     :disabled="disabled || loading"
-    :class="['app-button', variantClasses, sizeClasses, { 'is-disabled': disabled || loading }]"
+    :class="[
+      'inline-flex items-center justify-center gap-2 rounded-sm font-heading font-bold cursor-pointer transition-colors duration-150 whitespace-nowrap',
+      variantClasses,
+      sizeClasses,
+      { 'opacity-50 cursor-not-allowed pointer-events-none': disabled || loading }
+    ]"
   >
     <svg
       v-if="loading"
-      class="btn-spinner"
+      class="w-4 h-4 animate-spin text-current"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -97,109 +107,3 @@ const sizeClasses = computed(() => {
     <slot />
   </button>
 </template>
-
-<style scoped>
-.app-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-heading);
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
-  white-space: nowrap;
-}
-
-/* Sizing */
-.btn-sm {
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--text-xs);
-  min-height: 28px;
-}
-.btn-md {
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--text-sm);
-  min-height: 38px;
-}
-.btn-lg {
-  padding: var(--space-3) var(--space-5);
-  font-size: var(--text-base);
-  min-height: 48px;
-}
-
-/* Variants */
-.btn-primary {
-  background-color: var(--color-navy);
-  color: var(--color-white);
-  border: 1px solid var(--color-navy);
-}
-.btn-primary:hover:not(:disabled):not(.is-disabled) {
-  background-color: var(--color-deep-navy);
-  border-color: var(--color-deep-navy);
-}
-
-.btn-secondary {
-  background-color: transparent;
-  color: var(--color-navy);
-  border: 1px solid var(--color-navy);
-}
-.btn-secondary:hover:not(:disabled):not(.is-disabled) {
-  background-color: rgba(32, 40, 142, 0.06);
-}
-
-.btn-accent {
-  background-color: var(--color-violet);
-  color: var(--color-white);
-  border: 1px solid var(--color-violet);
-}
-.btn-accent:hover:not(:disabled):not(.is-disabled) {
-  background-color: #c447ee;
-  border-color: #c447ee;
-}
-
-.btn-text {
-  background-color: transparent;
-  color: var(--color-navy);
-  border: 1px solid transparent;
-}
-.btn-text:hover:not(:disabled):not(.is-disabled) {
-  text-decoration: underline;
-}
-
-.btn-danger {
-  background-color: var(--color-error);
-  color: var(--color-white);
-  border: 1px solid var(--color-error);
-}
-.btn-danger:hover:not(:disabled):not(.is-disabled) {
-  background-color: #7f1d1d;
-  border-color: #7f1d1d;
-}
-
-/* Disabled State */
-.is-disabled,
-.app-button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* Spinner */
-.btn-spinner {
-  width: 16px;
-  height: 16px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>

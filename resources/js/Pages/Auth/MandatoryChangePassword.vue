@@ -24,20 +24,22 @@ const submit = () => {
   <GuestLayout>
     <Head title="Wajib Perbarui Password" />
 
-    <div class="mandatory-header">
-      <h2 class="mandatory-title">Wajib Perbarui Kata Sandi</h2>
-      <p class="mandatory-subtitle">
+    <div class="mb-4 text-center">
+      <h2 class="m-0 font-heading text-xl font-bold text-ptkp-navy">
+        Wajib Perbarui Kata Sandi
+      </h2>
+      <p class="mt-1 mb-0 font-body text-sm text-slate-500">
         Akun Anda memerlukan pembaruan kata sandi sebelum dapat mengakses fitur sistem.
       </p>
     </div>
 
-    <div class="alert-box">
+    <div class="mb-4">
       <AppAlert variant="warning">
         Demi keamanan akun internal PT Kertas Padalarang, Anda wajib mengganti password default Anda.
       </AppAlert>
     </div>
 
-    <form @submit.prevent="submit" class="mandatory-form">
+    <form @submit.prevent="submit" class="flex flex-col gap-4">
       <AppInput
         id="current_password"
         type="password"
@@ -69,13 +71,13 @@ const submit = () => {
         required
       />
 
-      <div class="actions-row">
+      <div class="mt-2">
         <AppButton
           type="submit"
           variant="primary"
           size="lg"
           :loading="form.processing"
-          class="submit-button"
+          class="w-full"
         >
           Simpan & Masuk ke Sistem
         </AppButton>
@@ -83,43 +85,3 @@ const submit = () => {
     </form>
   </GuestLayout>
 </template>
-
-<style scoped>
-.mandatory-header {
-  margin-bottom: var(--space-4);
-  text-align: center;
-}
-
-.mandatory-title {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  color: var(--color-navy);
-}
-
-.mandatory-subtitle {
-  margin: var(--space-1) 0 0 0;
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  color: #64748b;
-}
-
-.alert-box {
-  margin-bottom: var(--space-4);
-}
-
-.mandatory-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.actions-row {
-  margin-top: var(--space-2);
-}
-
-.submit-button {
-  width: 100%;
-}
-</style>

@@ -52,19 +52,25 @@ const hasError = computed(() => Boolean(props.error));
 </script>
 
 <template>
-  <div class="app-form-group">
-    <label v-if="label" :for="id" class="app-label">
+  <div class="flex flex-col gap-1 w-full">
+    <label v-if="label" :for="id" class="font-body text-sm font-medium text-ptkp-body">
       {{ label }}
-      <span v-if="required" class="required-mark" aria-hidden="true">*</span>
+      <span v-if="required" class="text-ptkp-error ml-0.5" aria-hidden="true">*</span>
     </label>
 
-    <div class="select-wrapper">
+    <div class="relative w-full">
       <select
         :id="id"
         :value="modelValue"
         :required="required"
         :disabled="disabled"
-        :class="['app-select', { 'has-error': hasError }]"
+        :class="[
+          'w-full px-3 py-2 pr-8 font-body text-sm text-ptkp-body bg-white border rounded-sm outline-none appearance-none cursor-pointer transition-colors duration-150',
+          hasError
+            ? 'border-ptkp-error focus:border-ptkp-error focus:ring-1 focus:ring-ptkp-error'
+            : 'border-ptkp-border focus:border-ptkp-navy focus:ring-1 focus:ring-ptkp-navy',
+          disabled ? 'bg-ptkp-mist cursor-not-allowed opacity-80' : ''
+        ]"
         @change="onChange"
       >
         <option v-if="placeholder" value="" disabled :selected="!modelValue">
@@ -78,8 +84,9 @@ const hasError = computed(() => Boolean(props.error));
           {{ opt.label }}
         </option>
       </select>
-      <div class="select-chevron" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500">
+        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path
             fill-rule="evenodd"
             d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
@@ -89,103 +96,11 @@ const hasError = computed(() => Boolean(props.error));
       </div>
     </div>
 
-    <p v-if="error" class="error-message" role="alert">
+    <p v-if="error" class="font-body text-xs text-ptkp-error m-0" role="alert">
       {{ error }}
     </p>
-    <p v-else-if="hint" class="hint-message">
+    <p v-else-if="hint" class="font-body text-xs text-slate-500 m-0">
       {{ hint }}
     </p>
   </div>
 </template>
-
-<style scoped>
-.app-form-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  width: 100%;
-}
-
-.app-label {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--color-text-body);
-}
-
-.required-mark {
-  color: var(--color-error);
-  margin-left: 2px;
-}
-
-.select-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.app-select {
-  width: 100%;
-  padding: var(--space-2) var(--space-6) var(--space-2) var(--space-3);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  color: var(--color-text-body);
-  background-color: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  outline: none;
-  appearance: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  box-sizing: border-box;
-  cursor: pointer;
-}
-
-.app-select:focus {
-  border-color: var(--color-navy);
-  box-shadow: 0 0 0 1px var(--color-navy);
-}
-
-.app-select.has-error {
-  border-color: var(--color-error);
-}
-.app-select.has-error:focus {
-  box-shadow: 0 0 0 1px var(--color-error);
-}
-
-.app-select:disabled {
-  background-color: var(--color-mist);
-  cursor: not-allowed;
-  opacity: 0.8;
-}
-
-.select-chevron {
-  position: absolute;
-  right: var(--space-3);
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  width: 16px;
-  height: 16px;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.select-chevron svg {
-  width: 16px;
-  height: 16px;
-}
-
-.error-message {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  color: var(--color-error);
-  margin: 0;
-}
-
-.hint-message {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  color: #64748b;
-  margin: 0;
-}
-</style>

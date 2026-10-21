@@ -16,12 +16,16 @@ interface AuditServiceInterface
      * @param  string|null  $notes  Optional context notes
      */
     public function log(
-        string $module,
-        string $action,
-        string $auditableType,
-        string $auditableId,
+        string $module = 'platform',
+        string $action = '',
+        string $auditableType = '',
+        string $auditableId = '',
         ?array $oldValues = null,
         ?array $newValues = null,
-        ?string $notes = null
+        ?string $notes = null,
+        ?string $entityType = null,
+        ?string $entityId = null,
+        ?array $before = null,
+        ?array $after = null
     ): void;
 }
