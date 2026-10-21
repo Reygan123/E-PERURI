@@ -33,15 +33,15 @@ class UserResolverService implements UserResolverInterface
     /**
      * Check if the authenticated user has a specific permission.
      */
-    public function hasPermission(string $permission): bool
+    public function hasPermission(string $permission, ?User $user = null): bool
     {
-        /** @var User|null $user */
-        $user = Auth::user();
-        if (! $user) {
+        /** @var User|null $targetUser */
+        $targetUser = $user ?? Auth::user();
+        if (! $targetUser) {
             return false;
         }
 
-        $activeRoles = UserRole::where('user_id', $user->id)
+        $activeRoles = UserRole::where('user_id', $targetUser->id)
             ->where('valid_from', '<=', now())
             ->where(function ($query) {
                 $query->whereNull('valid_until')->orWhere('valid_until', '>=', now());
@@ -58,15 +58,15 @@ class UserResolverService implements UserResolverInterface
     /**
      * Check if the authenticated user has a specific role.
      */
-    public function hasRole(string $role): bool
+    public function hasRole(string $role, ?User $user = null): bool
     {
-        /** @var User|null $user */
-        $user = Auth::user();
-        if (! $user) {
+        /** @var User|null $targetUser */
+        $targetUser = $user ?? Auth::user();
+        if (! $targetUser) {
             return false;
         }
 
-        return UserRole::where('user_id', $user->id)
+        return UserRole::where('user_id', $targetUser->id)
             ->whereHas('role', function ($query) use ($role) {
                 $query->where('name', $role);
             })
@@ -82,15 +82,15 @@ class UserResolverService implements UserResolverInterface
      *
      * @return array<string, mixed>
      */
-    public function getActiveScope(): array
+    public function getActiveScope(?User $user = null): array
     {
-        /** @var User|null $user */
-        $user = Auth::user();
-        if (! $user) {
+        /** @var User|null $targetUser */
+        $targetUser = $user ?? Auth::user();
+        if (! $targetUser) {
             return ['scope' => 'none'];
         }
 
-        $activeUserRoles = UserRole::where('user_id', $user->id)
+        $activeUserRoles = UserRole::where('user_id', $targetUser->id)
             ->where('valid_from', '<=', now())
             ->where(function ($query) {
                 $query->whereNull('valid_until')->orWhere('valid_until', '>=', now());
@@ -135,7 +135,7 @@ class UserResolverService implements UserResolverInterface
 
         return [
             'scope' => $scopeType,
-            'employee_id' => $user->employee_id,
+            'employee_id' => $targetUser->employee_id,
             'org_unit_ids' => array_values(array_unique($orgUnitIds)),
         ];
     }

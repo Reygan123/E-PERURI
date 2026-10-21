@@ -70,6 +70,7 @@ class RoleAndPermissionSeeder extends Seeder
                 'label' => 'Pegawai',
                 'permissions' => [
                     'platform.org_unit.view',
+                    'platform.employee.view',
                 ],
                 'scope' => 'own',
             ],

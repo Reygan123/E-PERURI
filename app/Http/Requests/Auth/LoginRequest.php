@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
+use App\Modules\Platform\Contracts\AuditServiceInterface;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,7 +30,9 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required_without_all:username,login', 'nullable', 'string'],
+            'username' => ['required_without_all:email,login', 'nullable', 'string'],
+            'login' => ['required_without_all:email,username', 'nullable', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -42,8 +46,28 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $loginValue = (string) ($this->input('login') ?: ($this->input('username') ?: $this->input('email')));
+        $isEmail = filter_var($loginValue, FILTER_VALIDATE_EMAIL) !== false;
+        $credentialKey = $isEmail ? 'email' : 'username';
+
+        $credentials = [
+            $credentialKey => $loginValue,
+            'password' => (string) $this->input('password'),
+        ];
+
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
+
+            // Audit failed login
+            app(AuditServiceInterface::class)->log(
+                module: 'platform',
+                action: 'LOGIN_FAILED',
+                auditableType: 'User',
+                auditableId: (string) Str::uuid(),
+                oldValues: null,
+                newValues: ['login' => $loginValue, 'ip' => $this->ip()],
+                notes: 'Autentikasi gagal: kredensial tidak sesuai'
+            );
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
@@ -51,6 +75,21 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
+
+        /** @var User $user */
+        $user = Auth::user();
+        $user->update(['last_login_at' => now()]);
+
+        // Audit successful login
+        app(AuditServiceInterface::class)->log(
+            module: 'platform',
+            action: 'LOGIN_SUCCESS',
+            auditableType: 'User',
+            auditableId: $user->id,
+            oldValues: null,
+            newValues: ['login' => $loginValue, 'ip' => $this->ip()],
+            notes: 'Autentikasi berhasil'
+        );
     }
 
     /**
@@ -81,6 +120,8 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        $loginValue = (string) ($this->input('login') ?: ($this->input('username') ?: $this->input('email')));
+
+        return Str::transliterate(Str::lower($loginValue).'|'.$this->ip());
     }
 }

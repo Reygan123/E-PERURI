@@ -2,6 +2,8 @@
 
 namespace App\Modules\Platform\Contracts;
 
+use App\Models\User;
+
 interface UserResolverInterface
 {
     /**
@@ -17,17 +19,17 @@ interface UserResolverInterface
     /**
      * Check if the authenticated user has a specific permission.
      */
-    public function hasPermission(string $permission): bool;
+    public function hasPermission(string $permission, ?User $user = null): bool;
 
     /**
      * Check if the authenticated user has a specific role.
      */
-    public function hasRole(string $role): bool;
+    public function hasRole(string $role, ?User $user = null): bool;
 
     /**
      * Get all active scope restrictions for the authenticated user.
      *
      * @return array<string, mixed>
      */
-    public function getActiveScope(): array;
+    public function getActiveScope(?User $user = null): array;
 }
