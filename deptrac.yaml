@@ -1,0 +1,47 @@
+deptrac:
+  paths:
+    - app
+  exclude_files:
+    - '#.*Test\.php$#'
+  layers:
+    - name: Platform_Contracts
+      collectors:
+        - type: directory
+          value: app/Modules/Platform/Contracts/.*
+    - name: Platform_Internal
+      collectors:
+        - type: directory
+          value: app/Modules/Platform/(?!Contracts/).*
+    - name: Layanan_Module
+      collectors:
+        - type: directory
+          value: app/Modules/Layanan/.*
+    - name: Arsip_Module
+      collectors:
+        - type: directory
+          value: app/Modules/Arsip/.*
+    - name: Pembelajaran_Module
+      collectors:
+        - type: directory
+          value: app/Modules/Pembelajaran/.*
+    - name: Sdm_Module
+      collectors:
+        - type: directory
+          value: app/Modules/Sdm/.*
+    - name: Manufaktur_Module
+      collectors:
+        - type: directory
+          value: app/Modules/Manufaktur/.*
+  ruleset:
+    Platform_Internal:
+      - Platform_Contracts
+    Layanan_Module:
+      - Platform_Contracts
+    Arsip_Module:
+      - Platform_Contracts
+    Pembelajaran_Module:
+      - Platform_Contracts
+    Sdm_Module:
+      - Platform_Contracts
+    Manufaktur_Module:
+      - Platform_Contracts
