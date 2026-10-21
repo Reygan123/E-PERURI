@@ -8,17 +8,21 @@ AGENTS.md menang.
 
 | Token | Nilai | Fungsi |
 |---|---|---|
-| `--color-navy` | `#20288E` | Utama: heading, tombol primer, elemen aktif |
-| `--color-violet` | `#D861FF` | Aksen; **hanya di atas latar Navy/Deep Navy** |
-| `--color-deep-navy` | `#141A5C` | Sidebar, header gelap, hover tombol primer |
-| `--color-mist` | `#EEF0FB` | Latar halaman, kartu sekunder, input disabled |
+| `--color-navy` | `#20288E` | Utama: heading, tombol primer, elemen aktif (`ptkp-navy`) |
+| `--color-violet` | `#D861FF` | Aksen; **hanya di atas latar Navy/Deep Navy** (`ptkp-violet`) |
+| `--color-deep-navy` | `#141A5C` | Sidebar, header gelap, hover tombol primer (`ptkp-deep`) |
+| `--color-mist` | `#EEF0FB` | Latar halaman, kartu sekunder, input disabled (`ptkp-mist`) |
 | `--color-white` | `#FFFFFF` | Latar kartu, form, konten |
 | `--color-text` | `#20288E` | Heading |
 | `--color-text-body` | `#1A1A2E` | Paragraf dan label |
-| `--color-border` | `rgba(32,40,142,0.14)` | Border dan divider |
+| `--color-border` | `rgba(32,40,142,0.14)` | Border dan divider (`ptkp-border`) |
+| `--color-success` | `#1E7E34` | Notifikasi & status sukses/aktif (`ptkp-success`) |
+| `--color-warning` | `#B7791F` | Notifikasi peringatan/pending (`ptkp-warning`) |
+| `--color-error` | `#C53030` | Notifikasi error/batal/nonaktif (`ptkp-error`) |
+| `--color-neutral` | `#4A5568` | Badge/tag netral (`ptkp-neutral`) |
 
 - Violet dilarang sebagai warna teks di atas putih/Mist, dan dilarang sebagai tombol di latar putih/Mist.
-- Warna notifikasi (hijau tua sukses, kuning tua peringatan, merah tua error) dan abu netral untuk badge **belum punya token**. Jangan di-hardcode. Tanyakan atau usulkan token dan minta persetujuan.
+- Tailwind CSS v3 digunakan di seluruh komponen dengan mapping palet `ptkp.*` di `tailwind.config.js` merujuk ke CSS variables token di atas.
 
 ## Tipografi
 

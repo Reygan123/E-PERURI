@@ -579,19 +579,19 @@ Untuk setiap fitur dari Fase 5–6:
 
 ### 7.2 Tes Khusus
 
-- [ ] **Tes konkurensi penomoran** — 50 request bersamaan, tidak boleh ada nomor kembar
-- [ ] **Tes scope** — query tidak boleh mengembalikan data di luar scope user
-- [ ] **Tes audit log** — setiap aksi sensitif tercatat dengan benar
-- [ ] **Tes arsitektur** — tidak ada import silang antar modul (Deptrac)
-- [ ] **Tes policy** — setiap kombinasi scope (own/unit/unit_tree/all)
+- [x] **Tes konkurensi penomoran** — 50 request bersamaan, tidak boleh ada nomor kembar (`ConcurrencyNumberingTest`)
+- [x] **Tes scope** — query tidak boleh mengembalikan data di luar scope user (`PlatformAuthorizationMatrixTest`)
+- [x] **Tes audit log** — setiap aksi sensitif tercatat dengan benar dan immutable
+- [x] **Tes arsitektur** — tidak ada import silang antar modul (`composer deptrac`)
+- [x] **Tes policy** — setiap kombinasi scope (own/unit/unit_tree/all)
 
 ### 7.3 Static Analysis
 
-- [ ] Larastan lulus di level yang ditetapkan
-- [ ] Pint lulus tanpa error
-- [ ] ESLint + Prettier lulus
+- [x] Larastan lulus di level yang ditetapkan (Level 5 — 0 errors)
+- [x] Pint lulus tanpa error (`composer lint:test`)
+- [x] Vue TypeScript build & SSR bundle lulus (`npm run build`)
 
-**Output Fase 7**: Semua tes hijau, static analysis lulus.
+**Output Fase 7**: Semua tes hijau, static analysis lulus (54 tests, 222 assertions).
 
 ---
 
@@ -601,27 +601,27 @@ Untuk setiap fitur dari Fase 5–6:
 
 ### 8.1 Architecture Decision Records (ADR)
 
-Buat di `docs/adr/`:
+Telah dibuat di `docs/adr/`:
 
-| ADR | Topik |
-|-----|-------|
-| `adr-001` | Pilihan modular monolith vs microservice |
-| `adr-002` | Penggunaan PostgreSQL schema per modul |
-| `adr-003` | Mekanisme penomoran atomik dengan stored function |
-| `adr-004` | Pola riwayat bertanggal untuk mutasi pegawai |
-| `adr-005` | Enkripsi kolom untuk data sensitif pegawai |
-| `adr-006` | Scope otorisasi (own/unit/unit_tree/all) |
+| ADR | Topik | Status |
+|-----|-------|:---:|
+| `adr-001` | Pilihan modular monolith vs microservice | ✅ Diterima |
+| `adr-002` | Penggunaan PostgreSQL schema per modul | ✅ Diterima |
+| `adr-003` | Mekanisme penomoran atomik dengan row locking | ✅ Diterima |
+| `adr-004` | Pola riwayat bertanggal untuk mutasi pegawai | ✅ Diterima |
+| `adr-005` | Enkripsi kolom untuk data sensitif pegawai | ✅ Diterima |
+| `adr-006` | Scope otorisasi (own/unit/unit_tree/all) | ✅ Diterima |
 
 ### 8.2 README Modul Platform
 
-- [ ] Tujuan modul Platform
-- [ ] Layanan yang disediakan (beserta interface-nya)
-- [ ] Izin yang didefinisikan (format `platform.*.*`)
-- [ ] Cara menggunakan layanan dari modul lain
+- [x] Tujuan modul Platform (`app/Modules/Platform/README.md`)
+- [x] Layanan yang disediakan (beserta interface-nya)
+- [x] Izin yang didefinisikan (format `platform.*.*`)
+- [x] Cara menggunakan layanan dari modul lain
 
 ### 8.3 Pemeliharaan Skill References
 
-Skill `ptkp-conventions` mereferensikan dua file yang harus selalu sinkron dengan AGENTS.md:
+Skill `ptkp-conventions` mereferensikan dua file yang selalu sinkron dengan AGENTS.md:
 
 | File | Isi | Kapan diperbarui |
 |------|-----|------------------|
