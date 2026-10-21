@@ -189,8 +189,8 @@ const columns = [
       </template>
 
       <!-- Filter Bar -->
-      <div class="flex items-center justify-between gap-4 mb-4 flex-wrap">
-        <div class="flex gap-3 flex-1 max-w-3xl flex-wrap sm:flex-nowrap">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
           <AppInput
             placeholder="Cari NIP, nama, atau email..."
             v-model="search"
@@ -212,7 +212,7 @@ const columns = [
             @change="handleFilter"
           />
         </div>
-        <AppButton variant="secondary" size="md" @click="handleFilter">
+        <AppButton variant="secondary" size="md" class="shrink-0" @click="handleFilter">
           Filter
         </AppButton>
       </div>
@@ -222,7 +222,7 @@ const columns = [
         <AppTable :columns="columns" :items="employees.data" dark-header>
           <template #row="{ item }">
             <td class="px-4 py-3 align-middle">
-              <span class="font-mono text-xs font-bold text-ptkp-navy bg-ptkp-mist px-2 py-0.5 rounded-sm border border-ptkp-border">
+              <span class="font-mono text-xs font-bold text-ptkp-navy bg-slate-100 px-2 py-1 rounded-md">
                 {{ item.nip }}
               </span>
             </td>
@@ -264,7 +264,7 @@ const columns = [
               <div class="inline-flex items-center gap-2">
                 <Link
                   :href="route('platform.employees.show', item.id)"
-                  class="font-body text-xs font-semibold text-ptkp-navy px-2.5 py-1 rounded-sm border border-ptkp-border hover:bg-ptkp-mist hover:border-ptkp-navy transition-colors no-underline"
+                  class="font-body text-xs font-semibold text-ptkp-navy px-3 py-1.5 rounded-lg bg-ptkp-mist hover:bg-ptkp-navy hover:text-white transition-all shadow-xs no-underline"
                 >
                   Detail
                 </Link>
@@ -296,7 +296,7 @@ const columns = [
     >
       <form @submit.prevent="saveEmployee" class="flex flex-col gap-3">
         <!-- Section: Identitas Pegawai -->
-        <div class="font-heading text-xs font-bold text-ptkp-navy tracking-wide mt-2 pb-1 border-b border-ptkp-border">
+        <div class="font-heading text-xs font-bold text-ptkp-navy tracking-wide mt-2 pb-1 border-b border-slate-100">
           1. Data Induk Pegawai
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -354,7 +354,7 @@ const columns = [
 
         <!-- Section: Penugasan Awal (Hanya saat create) -->
         <template v-if="!editingEmployee">
-          <div class="font-heading text-xs font-bold text-ptkp-navy tracking-wide mt-2 pb-1 border-b border-ptkp-border">
+          <div class="font-heading text-xs font-bold text-ptkp-navy tracking-wide mt-2 pb-1 border-b border-slate-100">
             2. Penempatan & Formasi Jabatan
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -389,7 +389,7 @@ const columns = [
           </div>
 
           <!-- Section: Akun Portal -->
-          <div class="font-heading text-xs font-bold text-ptkp-navy tracking-wide mt-2 pb-1 border-b border-ptkp-border">
+          <div class="font-heading text-xs font-bold text-ptkp-navy tracking-wide mt-2 pb-1 border-b border-slate-100">
             3. Akun Pengguna Portal Internal
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -413,7 +413,7 @@ const columns = [
 
         <div class="mt-2">
           <label class="flex items-center gap-2 text-sm text-ptkp-body cursor-pointer">
-            <input type="checkbox" v-model="form.is_active" class="rounded-sm border-ptkp-border text-ptkp-navy focus:ring-ptkp-navy" />
+            <input type="checkbox" v-model="form.is_active" class="rounded-md border-slate-300 text-ptkp-navy focus:ring-ptkp-navy" />
             <span>Pegawai berstatus aktif dalam organisasi PTKP</span>
           </label>
         </div>

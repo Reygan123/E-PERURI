@@ -450,14 +450,17 @@ Buat satu file `resources/css/tokens.css` yang mendefinisikan semua token:
   --space-7: 48px;
   --space-8: 64px;
 
-  /* === BORDER RADIUS === */
-  --radius-sm:   4px;    /* tombol, input, kartu */
-  --radius-md:   8px;    /* modal, panel besar */
+  /* === BORDER RADIUS (Seamless Concentric Hierarchy) === */
+  --radius-xs:   4px;    /* micro-chips, status dots */
+  --radius-sm:   6px;    /* input, select, textarea, filter chips */
+  --radius-md:   8px;    /* tombol, alert, item navigasi */
+  --radius-lg:   12px;   /* kartu utama, modal, table wrapper */
   --radius-pill: 999px;  /* badge/tag saja */
 
-  /* === BAYANGAN === */
+  /* === BAYANGAN & ELEVASI === */
   --shadow-flat:   0 0 0 1px var(--color-border);
-  --shadow-raised: 0 2px 8px rgba(32, 40, 142, 0.14);
+  --shadow-card:   0 1px 3px rgba(20, 26, 92, 0.04), 0 1px 2px rgba(20, 26, 92, 0.02);
+  --shadow-raised: 0 4px 16px rgba(20, 26, 92, 0.08);
 }
 ```
 
@@ -470,16 +473,16 @@ Buat satu file `resources/css/tokens.css` yang mendefinisikan semua token:
 Buat di `resources/js/Components/` (bukan di dalam modul):
 
 **Komponen Wajib:**
-- [x] `AppButton.vue` — 4 varian: Utama, Sekunder, Aksen, Teks (lihat spec di AGENTS.md 9a.7)
-- [x] `AppInput.vue` — input text dengan label, error state, placeholder
-- [x] `AppTextarea.vue` — textarea dengan label dan error
-- [x] `AppSelect.vue` — dropdown select terstandar
-- [x] `AppCard.vue` — kartu dengan border 1px, radius-sm, padding space-5
+- [x] `AppButton.vue` — 4 varian: Utama, Sekunder, Aksen, Teks (radius-md 8px)
+- [x] `AppInput.vue` — input text dengan label, error state, placeholder (radius-sm 6px)
+- [x] `AppTextarea.vue` — textarea dengan label dan error (radius-sm 6px)
+- [x] `AppSelect.vue` — dropdown select terstandar (radius-sm 6px)
+- [x] `AppCard.vue` — kartu dengan border 1px, radius-lg (12px), elevasi halus shadow-card
 - [x] `AppBadge.vue` — badge pill dengan varian warna (navy, neutral)
-- [x] `AppAlert.vue` — notifikasi 4 varian (info/sukses/peringatan/error)
-- [x] `AppModal.vue` — modal dengan radius-md, shadow-raised
-- [x] `AppTable.vue` — tabel dengan header navy, border subtle
-- [x] `AppPagination.vue` — paginasi standar
+- [x] `AppAlert.vue` — notifikasi 4 varian (info/sukses/peringatan/error, radius-md 8px)
+- [x] `AppModal.vue` — modal dengan radius-lg (12px), shadow-raised
+- [x] `AppTable.vue` — tabel dengan header navy, border subtle, table wrapper seamless
+- [x] `AppPagination.vue` — paginasi standar (radius-sm 6px)
 
 **Aturan komponen:**
 - Semua komponen memakai CSS variables (`var(--color-navy)`, dll.) dan utilitas Tailwind CSS terkonfigurasi.

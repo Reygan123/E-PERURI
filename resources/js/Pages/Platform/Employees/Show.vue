@@ -142,27 +142,27 @@ const assignmentColumns = [
       <!-- Card: Biodata Pegawai -->
       <AppCard title="Identitas Induk Pegawai" subtitle="Informasi kepegawaian resmi tercatat">
         <div class="flex flex-col gap-3">
-          <div class="flex justify-between items-center pb-2 border-b border-ptkp-border">
+          <div class="flex justify-between items-center pb-2 border-b border-slate-100">
             <span class="font-body text-xs text-slate-500">Nomor Induk Pegawai (NIP)</span>
             <span class="font-mono text-sm text-ptkp-body">{{ employee.nip }}</span>
           </div>
-          <div class="flex justify-between items-center pb-2 border-b border-ptkp-border">
+          <div class="flex justify-between items-center pb-2 border-b border-slate-100">
             <span class="font-body text-xs text-slate-500">Nama Lengkap</span>
             <span class="font-body text-sm font-bold text-ptkp-body">{{ employee.name }}</span>
           </div>
-          <div class="flex justify-between items-center pb-2 border-b border-ptkp-border">
+          <div class="flex justify-between items-center pb-2 border-b border-slate-100">
             <span class="font-body text-xs text-slate-500">Email Dinas</span>
             <span class="font-body text-sm text-ptkp-body">{{ employee.email }}</span>
           </div>
-          <div class="flex justify-between items-center pb-2 border-b border-ptkp-border">
+          <div class="flex justify-between items-center pb-2 border-b border-slate-100">
             <span class="font-body text-xs text-slate-500">Nomor Telepon</span>
             <span class="font-body text-sm text-ptkp-body">{{ employee.phone || '-' }}</span>
           </div>
-          <div class="flex justify-between items-center pb-2 border-b border-ptkp-border">
+          <div class="flex justify-between items-center pb-2 border-b border-slate-100">
             <span class="font-body text-xs text-slate-500">Jenis Kelamin</span>
             <span class="font-body text-sm text-ptkp-body">{{ employee.gender === 'female' ? 'Perempuan' : 'Laki-Laki' }}</span>
           </div>
-          <div class="flex justify-between items-center pb-2 border-b border-ptkp-border">
+          <div class="flex justify-between items-center pb-2 border-b border-slate-100">
             <span class="font-body text-xs text-slate-500">Status Kepegawaian</span>
             <span class="font-body text-sm text-ptkp-body">
               <AppBadge v-if="employee.is_active" variant="success" size="sm">Aktif</AppBadge>
@@ -176,18 +176,18 @@ const assignmentColumns = [
       <AppCard title="Akun Portal Terhubung" subtitle="Kredensial dan otorisasi hak akses modul">
         <template v-if="employee.user">
           <div class="flex flex-col gap-3">
-            <div class="flex justify-between items-center pb-2 border-b border-ptkp-border">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-100">
               <span class="font-body text-xs text-slate-500">Nama Pengguna (Username)</span>
               <span class="font-mono text-sm font-semibold text-ptkp-navy">@{{ employee.user.username }}</span>
             </div>
-            <div class="flex justify-between items-center pb-2 border-b border-ptkp-border">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-100">
               <span class="font-body text-xs text-slate-500">Status Akun</span>
               <span class="font-body text-sm text-ptkp-body">
                 <AppBadge v-if="employee.user.is_active" variant="success" size="sm">Aktif</AppBadge>
                 <AppBadge v-else variant="error" size="sm">Terkunci / Nonaktif</AppBadge>
               </span>
             </div>
-            <div class="flex justify-between items-center pb-2 border-b border-ptkp-border">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-100">
               <span class="font-body text-xs text-slate-500">Keamanan Kata Sandi</span>
               <span class="font-body text-sm text-ptkp-body">
                 <AppBadge v-if="employee.user.must_change_pwd" variant="warning" size="sm">
@@ -196,7 +196,7 @@ const assignmentColumns = [
                 <AppBadge v-else variant="neutral" size="sm">Aman & Terverifikasi</AppBadge>
               </span>
             </div>
-            <div class="flex justify-between items-center pb-2 border-b border-ptkp-border">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-100">
               <span class="font-body text-xs text-slate-500">Login Terakhir</span>
               <span class="font-body text-sm text-ptkp-body">{{ employee.user.last_login_at || 'Belum pernah login' }}</span>
             </div>
@@ -224,8 +224,8 @@ const assignmentColumns = [
           </div>
         </template>
         <template v-else>
-          <div class="p-4 bg-ptkp-mist rounded-sm text-sm text-slate-500">
-            <p>Pegawai ini belum memiliki akun portal pengguna.</p>
+          <div class="p-4 bg-slate-50 rounded-xl text-sm text-slate-500">
+            <p class="m-0">Pegawai ini belum memiliki akun portal pengguna.</p>
           </div>
         </template>
       </AppCard>
@@ -291,7 +291,7 @@ const assignmentColumns = [
       @close="closeAssignModal"
     >
       <form @submit.prevent="submitMutation" class="flex flex-col gap-3">
-        <p class="m-0 text-xs text-slate-600 bg-ptkp-mist p-3 rounded-sm leading-relaxed">
+        <p class="m-0 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-xl leading-relaxed">
           Mencatat penugasan baru akan secara otomatis mengakhiri penugasan aktif sebelumnya pada H-1 tanggal mulai yang dipilih (pola riwayat bertanggal).
         </p>
 

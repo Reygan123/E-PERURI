@@ -38,7 +38,7 @@ const variantClasses = computed(() => {
   <div
     v-if="!isDismissed"
     :class="[
-      'flex items-start gap-3 px-4 py-3 rounded-sm font-body border',
+      'flex items-start gap-3.5 px-4.5 py-3.5 rounded-md font-body border shadow-sm',
       variantClasses
     ]"
     role="alert"

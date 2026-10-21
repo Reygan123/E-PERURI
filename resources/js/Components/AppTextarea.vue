@@ -55,11 +55,11 @@ const hasError = computed(() => Boolean(props.error));
       :disabled="disabled"
       :readonly="readonly"
       :class="[
-        'w-full px-3 py-2 font-body text-sm text-ptkp-body bg-white border rounded-sm outline-none transition-colors duration-150 resize-y',
+        'w-full px-3.5 py-2 font-body text-sm text-ptkp-body bg-white border rounded-lg outline-none transition-all duration-150 resize-y shadow-2xs',
         hasError
-          ? 'border-ptkp-error focus:border-ptkp-error focus:ring-1 focus:ring-ptkp-error'
-          : 'border-ptkp-border focus:border-ptkp-navy focus:ring-1 focus:ring-ptkp-navy',
-        disabled ? 'bg-ptkp-mist cursor-not-allowed opacity-80' : ''
+          ? 'border-ptkp-error focus:border-ptkp-error focus:ring-2 focus:ring-ptkp-error/20'
+          : 'border-slate-200 focus:border-ptkp-navy focus:ring-2 focus:ring-ptkp-navy/15',
+        disabled ? 'bg-slate-50 cursor-not-allowed opacity-80 shadow-none' : ''
       ]"
       @input="onInput"
     ></textarea>

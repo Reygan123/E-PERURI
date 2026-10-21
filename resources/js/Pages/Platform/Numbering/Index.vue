@@ -155,7 +155,7 @@ const columns = [
         <AppTable :columns="columns" :items="formats" dark-header>
           <template #row="{ item }">
             <td class="px-4 py-3 align-middle">
-              <span class="font-mono text-xs font-bold text-ptkp-navy bg-ptkp-mist px-2 py-0.5 rounded-sm border border-ptkp-border">
+              <span class="font-mono text-xs font-bold text-ptkp-navy bg-slate-100 px-2 py-1 rounded-md">
                 {{ item.code }}
               </span>
             </td>
@@ -251,7 +251,7 @@ const columns = [
         </div>
 
         <!-- Live Interactive Preview Box -->
-        <div class="mt-2 p-3 bg-ptkp-mist rounded-sm border border-ptkp-border flex flex-col gap-1">
+        <div class="mt-2 p-4 bg-slate-50 rounded-xl flex flex-col gap-1.5 shadow-xs">
           <span class="font-heading text-xs font-bold text-ptkp-navy">
             Simulasi Nomor Tergenerate Saat Ini:
           </span>

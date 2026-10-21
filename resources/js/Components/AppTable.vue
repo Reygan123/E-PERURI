@@ -22,16 +22,16 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="bg-white border border-ptkp-border rounded-sm overflow-hidden flex flex-col shadow-flat">
-    <div class="overflow-x-auto w-full">
-      <table class="w-full border-collapse text-left font-body text-sm">
+  <div class="w-full overflow-hidden flex flex-col rounded-lg">
+    <div class="overflow-x-auto w-full scrollbar-thin">
+      <table class="w-full border-collapse text-left font-body text-sm min-w-[600px]">
         <thead>
-          <tr :class="darkHeader ? 'bg-ptkp-navy text-white font-heading font-bold' : 'bg-slate-50 text-ptkp-navy font-heading font-bold border-b-2 border-ptkp-border'">
+          <tr :class="darkHeader ? 'bg-ptkp-navy text-white font-heading font-bold' : 'bg-slate-50/80 text-ptkp-navy font-heading font-bold border-b border-slate-100'">
             <slot name="header">
               <th
                 v-for="col in columns"
                 :key="col.key"
-                class="px-4 py-3 whitespace-nowrap"
+                class="px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider font-semibold"
                 :style="{ textAlign: col.align || 'left', width: col.width }"
               >
                 {{ col.label }}
@@ -39,18 +39,18 @@ withDefaults(defineProps<Props>(), {
             </slot>
           </tr>
         </thead>
-        <tbody class="divide-y divide-ptkp-border">
+        <tbody class="divide-y divide-slate-100">
           <template v-if="items && items.length > 0">
             <tr
               v-for="(item, index) in items"
               :key="(item as any).id || index"
-              class="hover:bg-ptkp-navy/[0.03] transition-colors"
+              class="hover:bg-ptkp-navy/[0.025] transition-colors"
             >
               <slot name="row" :item="item" :index="index">
                 <td
                   v-for="col in columns"
                   :key="col.key"
-                  class="px-4 py-3 text-ptkp-body align-middle"
+                  class="px-4 py-3.5 text-ptkp-body align-middle"
                   :style="{ textAlign: col.align || 'left' }"
                 >
                   {{ item[col.key] }}
@@ -77,7 +77,7 @@ withDefaults(defineProps<Props>(), {
     <!-- Table Footer / Pagination Slot -->
     <div
       v-if="$slots.footer"
-      class="px-4 py-3 border-t border-ptkp-border bg-[#fafbfe] flex items-center justify-between"
+      class="px-4 py-3 border-t border-slate-100 bg-[#fafbfe] flex items-center justify-between"
     >
       <slot name="footer" />
     </div>

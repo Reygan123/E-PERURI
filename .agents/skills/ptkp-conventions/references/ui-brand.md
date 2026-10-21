@@ -34,18 +34,24 @@ AGENTS.md menang.
 
 `--space-1` 4, `--space-2` 8, `--space-3` 12, `--space-4` 16, `--space-5` 24, `--space-6` 32, `--space-7` 48, `--space-8` 64.
 
-## Radius dan bayangan
+## Radius dan bayangan (Seamless Concentric Hierarchy)
 
-- `--radius-sm` 4px: tombol, input, kartu (default). `--radius-md` 8px: panel besar, modal, drawer. `--radius-pill` 999px: **hanya badge/tag**.
-- Dilarang radius 12px atau lebih untuk kartu/tombol biasa.
-- Datar: `border: 1px solid var(--color-border)`. Terangkat (dropdown, modal): `box-shadow: 0 2px 8px rgba(32,40,142,0.14)`. Tidak ada bayangan lain.
+- `--radius-xs` 4px: micro-chips, status dots, badge mini.
+- `--radius-sm` 6px: input, select, textarea, filter chips.
+- `--radius-md` 8px: tombol aksi, alert box, active dropdown.
+- `--radius-lg` 12px: kartu utama (card), kontainer panel, modal dialog, table wrapper.
+- `--radius-pill` 999px: **hanya badge/tag**.
+- Dilarang radius ekstrem 16px atau lebih pada kartu/tombol biasa.
+- Datar: `border: 1px solid var(--color-border)`.
+- Elevasi kartu halus: `box-shadow: 0 1px 3px rgba(20, 26, 92, 0.04), 0 1px 2px rgba(20, 26, 92, 0.02)`.
+- Terangkat (dropdown, modal): `box-shadow: 0 4px 16px rgba(20, 26, 92, 0.08)`.
 
 ## Komponen
 
-- **Tombol**: Utama (bg Navy, teks putih), Sekunder (border Navy, transparan), Aksen (bg Violet, hanya di latar gelap), Teks. Semua `radius-sm`, teks bahasa Indonesia.
-- **Input**: border `--color-border`, radius 4px, fokus border Navy, error border merah + pesan Indonesia di bawah field, label selalu di atas (bukan placeholder).
-- **Kartu**: bg putih, border `--color-border`, radius 4px, padding `--space-5`, bayangan hanya bila interaktif/mengambang.
-- **Badge**: satu-satunya yang boleh pill.
+- **Tombol**: Utama (bg Navy, teks putih), Sekunder (border Navy, transparan), Aksen (bg Violet, hanya di latar gelap), Teks. Semua `radius-md` (8px), teks bahasa Indonesia.
+- **Input / Select**: border `--color-border`, radius `radius-sm` (6px), fokus border Navy + ring tipis, error border merah + pesan Indonesia di bawah field, label selalu di atas.
+- **Kartu**: bg putih, border `--color-border`, radius `radius-lg` (12px), elevasi halus `shadow-card`, padding header `px-6 py-4`, padding konten `p-6`.
+- **Badge**: satu-satunya yang boleh pill (`radius-pill`).
 
 ## Shell
 

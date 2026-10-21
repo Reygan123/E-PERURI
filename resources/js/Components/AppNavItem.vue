@@ -18,9 +18,9 @@ const isCurrentActive = computed(() => props.active);
   <Link
     :href="href"
     :class="[
-      'flex items-center gap-3 px-3 py-2 rounded-sm font-body text-sm font-medium no-underline transition-all duration-150',
+      'flex items-center gap-3 px-3.5 py-2.5 rounded-md font-body text-sm font-medium no-underline transition-all duration-150',
       isCurrentActive
-        ? 'bg-ptkp-violet/20 text-white font-semibold border-l-[3px] border-ptkp-violet'
+        ? 'bg-ptkp-violet/20 text-white font-semibold ring-1 ring-ptkp-violet/50 shadow-sm'
         : 'text-white/80 hover:bg-white/10 hover:text-white'
     ]"
     :aria-current="isCurrentActive ? 'page' : undefined"

@@ -35,8 +35,8 @@ const hasMeta = computed(() => props.total !== undefined);
 </script>
 
 <template>
-  <div class="flex items-center justify-between w-full gap-4 flex-wrap">
-    <div v-if="hasMeta" class="font-body text-xs text-slate-500">
+  <div class="flex flex-col sm:flex-row items-center justify-between w-full gap-3">
+    <div v-if="hasMeta" class="font-body text-xs text-slate-500 text-center sm:text-left">
       Menampilkan
       <span class="font-semibold text-ptkp-body">{{ from || 0 }}</span>
       sampai
@@ -46,21 +46,21 @@ const hasMeta = computed(() => props.total !== undefined);
       data
     </div>
 
-    <nav v-if="links && links.length > 3" class="inline-flex items-center gap-1" aria-label="Navigasi Halaman">
+    <nav v-if="links && links.length > 3" class="inline-flex items-center gap-1 flex-wrap justify-center" aria-label="Navigasi Halaman">
       <template v-for="(link, index) in links" :key="index">
         <span
           v-if="!link.url"
-          class="inline-flex items-center justify-center min-w-[32px] h-8 px-2 font-body text-xs font-medium rounded-sm opacity-40 cursor-not-allowed text-slate-400"
+          class="inline-flex items-center justify-center min-w-[32px] h-8 px-2 font-body text-xs font-medium rounded-lg opacity-40 cursor-not-allowed text-slate-400"
           v-html="cleanLabel(link.label)"
         />
         <Link
           v-else
           :href="link.url"
           :class="[
-            'inline-flex items-center justify-center min-w-[32px] h-8 px-2.5 font-body text-xs rounded-sm border transition-colors',
+            'inline-flex items-center justify-center min-w-[32px] h-8 px-2.5 font-body text-xs rounded-lg transition-all',
             link.active
-              ? 'bg-ptkp-navy border-ptkp-navy text-white font-bold'
-              : 'bg-white border-ptkp-border text-ptkp-body font-medium hover:bg-ptkp-mist hover:border-ptkp-navy hover:text-ptkp-navy'
+              ? 'bg-ptkp-navy text-white font-bold shadow-xs'
+              : 'bg-white text-ptkp-body font-medium hover:bg-slate-100 hover:text-ptkp-navy shadow-2xs'
           ]"
           :aria-current="link.active ? 'page' : undefined"
           preserve-scroll

@@ -29,6 +29,7 @@ export default {
                     'error-bg': '#FEE2E2',
                     neutral: '#475569',
                     'neutral-bg': '#F1F5F9',
+                    'border-subtle': 'rgba(32, 40, 142, 0.08)',
                 },
             },
             fontFamily: {
@@ -37,13 +38,17 @@ export default {
                 heading: ['Lexend', ...defaultTheme.fontFamily.sans],
             },
             borderRadius: {
-                sm: '4px',
+                xs: '4px',
+                sm: '6px',
                 md: '8px',
+                lg: '12px',
+                xl: '16px',
                 pill: '999px',
             },
             boxShadow: {
-                flat: '0 0 0 1px rgba(32, 40, 142, 0.14)',
-                raised: '0 2px 8px rgba(32, 40, 142, 0.14)',
+                flat: '0 0 0 1px rgba(32, 40, 142, 0.12)',
+                card: '0 1px 3px rgba(20, 26, 92, 0.04), 0 1px 2px rgba(20, 26, 92, 0.02)',
+                raised: '0 4px 16px rgba(20, 26, 92, 0.08)',
             },
         },
     },

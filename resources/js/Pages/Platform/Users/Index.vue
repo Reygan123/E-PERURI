@@ -169,8 +169,8 @@ const columns = [
       subtitle="Pengaturan otorisasi berbasis peran (RBAC) dengan cakupan scope unit di lingkungan PTKP"
     >
       <!-- Filter Bar -->
-      <div class="flex items-center justify-between gap-4 mb-4 flex-wrap">
-        <div class="flex gap-3 flex-1 max-w-3xl flex-wrap sm:flex-nowrap">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
           <AppInput
             placeholder="Cari username, nama, atau email..."
             v-model="search"
@@ -192,7 +192,7 @@ const columns = [
             @change="handleFilter"
           />
         </div>
-        <AppButton variant="secondary" size="md" @click="handleFilter">
+        <AppButton variant="secondary" size="md" class="shrink-0" @click="handleFilter">
           Filter
         </AppButton>
       </div>
@@ -202,7 +202,7 @@ const columns = [
         <AppTable :columns="columns" :items="users.data" dark-header>
           <template #row="{ item }">
             <td class="px-4 py-3 align-middle">
-              <span class="font-mono text-xs font-bold text-ptkp-navy bg-ptkp-mist px-2 py-0.5 rounded-sm border border-ptkp-border">
+              <span class="font-mono text-xs font-bold text-ptkp-navy bg-slate-100 px-2 py-1 rounded-md">
                 @{{ item.username }}
               </span>
             </td>
@@ -224,7 +224,7 @@ const columns = [
                   <div
                     v-for="ur in item.user_roles"
                     :key="ur.id"
-                    class="inline-flex items-center gap-1 bg-ptkp-mist px-2 py-0.5 rounded-sm border border-ptkp-border"
+                    class="inline-flex items-center gap-1.5 bg-slate-100 px-2.5 py-1 rounded-md text-xs shadow-2xs"
                   >
                     <span class="font-medium text-xs text-ptkp-navy">{{ ur.role.label }}</span>
                     <span v-if="ur.org_unit" class="text-[10px] text-slate-500 font-mono">

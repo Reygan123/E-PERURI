@@ -83,7 +83,7 @@ onUnmounted(() => {
       >
         <div
           :class="[
-            'w-full bg-white border border-ptkp-border rounded-md shadow-raised flex flex-col max-h-[90vh] overflow-hidden',
+            'w-full bg-white rounded-xl shadow-raised flex flex-col max-h-[90vh] overflow-hidden',
             maxWidthClass
           ]"
           role="dialog"
@@ -93,7 +93,7 @@ onUnmounted(() => {
           <!-- Header -->
           <div
             v-if="title || $slots.header"
-            class="flex items-center justify-between px-6 py-4 border-b border-ptkp-border"
+            class="flex items-center justify-between px-6 py-4 border-b border-slate-100"
           >
             <slot name="header">
               <h3 class="m-0 font-heading text-lg font-bold text-ptkp-navy">
@@ -103,7 +103,7 @@ onUnmounted(() => {
             <button
               v-if="closeable"
               type="button"
-              class="text-slate-400 hover:text-ptkp-navy transition-colors p-1"
+              class="text-slate-400 hover:text-ptkp-navy hover:bg-slate-100 rounded-lg transition-colors p-1.5"
               aria-label="Tutup modal"
               @click="close"
             >
@@ -123,7 +123,7 @@ onUnmounted(() => {
           <!-- Footer -->
           <div
             v-if="$slots.footer"
-            class="px-6 py-3 bg-[#fafbfe] border-t border-ptkp-border flex items-center justify-end gap-3"
+            class="px-6 py-4 bg-[#fafbfe] border-t border-slate-100 flex items-center justify-end gap-3"
           >
             <slot name="footer" />
           </div>

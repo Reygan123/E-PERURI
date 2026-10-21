@@ -70,7 +70,7 @@ const submit = () => {
           <input
             type="checkbox"
             v-model="form.remember"
-            class="rounded-sm border-ptkp-border text-ptkp-navy focus:ring-ptkp-navy"
+            class="rounded-md border-slate-300 text-ptkp-navy focus:ring-ptkp-navy"
           />
           <span>Ingat saya di perangkat ini</span>
         </label>

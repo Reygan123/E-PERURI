@@ -25,7 +25,7 @@ const isLink = computed(() => Boolean(props.href));
 const variantClasses = computed(() => {
   switch (props.variant) {
     case 'secondary':
-      return 'bg-transparent text-ptkp-navy border border-ptkp-navy hover:bg-ptkp-navy/5';
+      return 'bg-white text-ptkp-navy border border-slate-200 hover:bg-slate-50 hover:border-slate-300 shadow-xs';
     case 'accent':
       return 'bg-ptkp-violet text-white border border-ptkp-violet hover:bg-[#c447ee] hover:border-[#c447ee]';
     case 'text':
@@ -56,7 +56,7 @@ const sizeClasses = computed(() => {
     v-if="isLink"
     :href="href!"
     :class="[
-      'inline-flex items-center justify-center gap-2 rounded-sm font-heading font-bold cursor-pointer transition-colors duration-150 whitespace-nowrap text-decoration-none',
+      'inline-flex items-center justify-center gap-2 rounded-lg font-heading font-bold cursor-pointer transition-all duration-150 whitespace-nowrap text-decoration-none shadow-xs hover:shadow active:scale-[0.99]',
       variantClasses,
       sizeClasses,
       { 'opacity-50 cursor-not-allowed pointer-events-none': disabled || loading }
@@ -84,7 +84,7 @@ const sizeClasses = computed(() => {
     :type="type"
     :disabled="disabled || loading"
     :class="[
-      'inline-flex items-center justify-center gap-2 rounded-sm font-heading font-bold cursor-pointer transition-colors duration-150 whitespace-nowrap',
+      'inline-flex items-center justify-center gap-2 rounded-lg font-heading font-bold cursor-pointer transition-all duration-150 whitespace-nowrap shadow-xs hover:shadow active:scale-[0.99]',
       variantClasses,
       sizeClasses,
       { 'opacity-50 cursor-not-allowed pointer-events-none': disabled || loading }

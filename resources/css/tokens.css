@@ -46,12 +46,16 @@
   --space-7: 48px;
   --space-8: 64px;
 
-  /* === BORDER RADIUS === */
-  --radius-sm: 4px;              /* Default: tombol, input, kartu */
-  --radius-md: 8px;              /* Modal, panel besar, drawer */
-  --radius-pill: 999px;          /* HANYA badge dan tag */
+  /* === BORDER RADIUS (Seamless Concentric Hierarchy) === */
+  --radius-xs: 4px;              /* Micro-chips, status dots */
+  --radius-sm: 6px;              /* Form input, select, textarea, filter chips */
+  --radius-md: 8px;              /* Tombol aksi, alert banner, dropdown item active */
+  --radius-lg: 12px;             /* Kartu utama, container panel, modal dialog, table wrapper */
+  --radius-pill: 999px;          /* Status badge dan pill tags */
 
-  /* === BAYANGAN (SHADOW) === */
+  /* === BAYANGAN & ELEVASI (Subtle Ambient Elevation) === */
   --shadow-flat: 0 0 0 1px var(--color-border);
-  --shadow-raised: 0 2px 8px rgba(32, 40, 142, 0.14);
+  --shadow-card: 0 1px 3px rgba(20, 26, 92, 0.04), 0 1px 2px rgba(20, 26, 92, 0.02);
+  --shadow-raised: 0 4px 16px rgba(20, 26, 92, 0.08);
 }
+

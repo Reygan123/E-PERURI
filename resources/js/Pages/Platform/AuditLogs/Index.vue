@@ -101,43 +101,39 @@ const columns = [
       subtitle="Catatan jejak audit append-only yang tidak dapat diubah maupun dihapus (immutable)"
     >
       <!-- Filter Bar -->
-      <div class="flex flex-col gap-3 mb-4">
-        <div class="flex gap-3 flex-wrap">
-          <div class="flex-1 min-w-[200px]">
-            <AppInput
-              placeholder="Cari entitas atau user agent..."
-              v-model="search"
-              @keyup.enter="handleFilter"
-            />
-          </div>
-          <div class="w-44">
-            <AppSelect
-              :options="modules"
-              placeholder="-- Semua Modul --"
-              v-model="moduleFilter"
-              @change="handleFilter"
-            />
-          </div>
-          <div class="w-44">
-            <AppSelect
-              :options="actions"
-              placeholder="-- Semua Aksi --"
-              v-model="actionFilter"
-              @change="handleFilter"
-            />
-          </div>
+      <div class="flex flex-col gap-3 mb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <AppInput
+            placeholder="Cari entitas atau user agent..."
+            v-model="search"
+            @keyup.enter="handleFilter"
+          />
+          <AppSelect
+            :options="modules"
+            placeholder="-- Semua Modul --"
+            v-model="moduleFilter"
+            @change="handleFilter"
+          />
+          <AppSelect
+            :options="actions"
+            placeholder="-- Semua Aksi --"
+            v-model="actionFilter"
+            @change="handleFilter"
+          />
         </div>
 
-        <div class="flex items-center gap-3 flex-wrap">
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-500 font-medium">Dari:</span>
-            <AppInput type="date" v-model="dateFrom" />
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-500 font-medium shrink-0">Dari:</span>
+              <AppInput type="date" v-model="dateFrom" />
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-500 font-medium shrink-0">Sampai:</span>
+              <AppInput type="date" v-model="dateTo" />
+            </div>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-500 font-medium">Sampai:</span>
-            <AppInput type="date" v-model="dateTo" />
-          </div>
-          <AppButton variant="secondary" size="md" @click="handleFilter">
+          <AppButton variant="secondary" size="md" class="shrink-0" @click="handleFilter">
             Terapkan Filter
           </AppButton>
         </div>
@@ -204,7 +200,7 @@ const columns = [
       @close="closeDetailModal"
     >
       <div v-if="activeLog" class="flex flex-col gap-4">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3 bg-ptkp-mist rounded-sm text-xs">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 p-4 bg-slate-50 rounded-xl text-xs">
           <div>
             <span class="text-slate-500 block">ID Log:</span>
             <span class="font-mono font-bold">{{ activeLog.id }}</span>
@@ -225,19 +221,19 @@ const columns = [
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <!-- Before State -->
-          <div class="flex flex-col gap-1">
+          <div class="flex flex-col gap-1.5">
             <span class="font-heading text-xs font-bold text-slate-600">
               Data Sebelum (Before State):
             </span>
-            <pre class="m-0 p-3 bg-slate-900 text-slate-100 font-mono text-xs rounded-sm overflow-x-auto max-h-72">{{ activeLog.before ? JSON.stringify(activeLog.before, null, 2) : 'null (Data Baru)' }}</pre>
+            <pre class="m-0 p-3.5 bg-slate-900 text-slate-100 font-mono text-xs rounded-xl overflow-x-auto max-h-72 shadow-inner">{{ activeLog.before ? JSON.stringify(activeLog.before, null, 2) : 'null (Data Baru)' }}</pre>
           </div>
 
           <!-- After State -->
-          <div class="flex flex-col gap-1">
+          <div class="flex flex-col gap-1.5">
             <span class="font-heading text-xs font-bold text-ptkp-navy">
               Data Sesudah (After State):
             </span>
-            <pre class="m-0 p-3 bg-slate-900 text-slate-100 font-mono text-xs rounded-sm overflow-x-auto max-h-72">{{ activeLog.after ? JSON.stringify(activeLog.after, null, 2) : 'null (Dihapus)' }}</pre>
+            <pre class="m-0 p-3.5 bg-slate-900 text-slate-100 font-mono text-xs rounded-xl overflow-x-auto max-h-72 shadow-inner">{{ activeLog.after ? JSON.stringify(activeLog.after, null, 2) : 'null (Dihapus)' }}</pre>
           </div>
         </div>
 

@@ -233,28 +233,31 @@ Semua margin, padding, dan gap menggunakan **kelipatan 4px**. Jangan memakai nil
 | `--space-7` | 48px | Jarak antar section besar |
 | `--space-8` | 64px | Padding halaman utama, jarak hero section |
 
-### 9a.5 Border Radius
+### 9a.5 Border Radius & Kelengkungan Seamless
 
-Simbol logo berbilah tajam. Karena itu, **sudut UI dibuat kecil dan tegas** — bukan membulat penuh.
+Kelengkungan elemen UI mengikuti prinsip **hierarki konsentris yang seamless (concentric radius)**: kontainer luar memiliki lengkungan yang lebih lembut, sementara elemen di dalamnya memiliki kurva yang sejajar alami. Hal ini menjaga wibawa institusional Peruri tanpa terlihat kaku atau terlalu membulat ("bubbly").
 
 | Token | Nilai | Kegunaan |
 |-------|-------|---------|
-| `--radius-sm` | 4px | Tombol, input, kartu (default bawaan semua komponen) |
-| `--radius-md` | 8px | Panel besar, modal, drawer |
-| `--radius-pill` | 999px | Badge dan tag saja — bukan untuk kartu atau tombol biasa |
+| `--radius-xs` | 4px | Micro-chips, status dots, badge mini |
+| `--radius-sm` | 6px | Form input, select, textarea, filter chips |
+| `--radius-md` | 8px | Tombol aksi primer/sekunder, alert banner, item navigasi aktif |
+| `--radius-lg` | 12px | Kartu utama (card), kontainer panel, modal dialog, table wrapper |
+| `--radius-pill` | 999px | Badge status dan pill tag — bukan untuk tombol atau kartu |
 
-**Larangan:** Jangan memakai `border-radius: 12px`, `16px`, atau lebih besar kecuali ada justifikasi tertulis. Jangan membuat tampilan "bubbly" atau terlalu membulat.
+**Larangan:** Jangan memakai `border-radius: 16px` atau lebih besar pada kartu biasa, dan jangan membuat tombol berbentuk pill.
 
-### 9a.6 Bayangan (Shadow)
+### 9a.6 Bayangan & Elevasi Halus (Subtle Elevation)
 
-Hanya dua tingkat kedalaman yang digunakan:
+Tingkat kedalaman dirancang agar kontainer menyatu alami (*seamless*) di atas kanvas Mist:
 
 | Nama | Spesifikasi | Kegunaan |
 |------|-------------|---------|
-| Datar | `border: 1px solid var(--color-border)` | Kartu biasa, input, tabel — tanpa bayangan nyata |
-| Terangkat | `box-shadow: 0 2px 8px rgba(32, 40, 142, 0.14)` | Dropdown, modal, panel yang "mengambang" |
+| Datar / Border | `border: 1px solid var(--color-border)` | Garis batas struktural & divider tipis |
+| Kartu Halus | `box-shadow: 0 1px 3px rgba(20, 26, 92, 0.04), 0 1px 2px rgba(20, 26, 92, 0.02)` | Kartu konten standar di atas latar Mist |
+| Terangkat | `box-shadow: 0 4px 16px rgba(20, 26, 92, 0.08)` | Dropdown, modal, panel mengambang |
 
-Jangan memakai bayangan yang berat atau berwarna-warni. Bayangan hanya dari warna Navy dengan opacity rendah.
+Jangan memakai bayangan tebal, tajam, atau berwarna-warni selain turunan Deep Navy dengan opacity sangat rendah.
 
 ### 9a.7 Komponen UI Standar
 
@@ -262,40 +265,41 @@ Jangan memakai bayangan yang berat atau berwarna-warni. Bayangan hanya dari warn
 
 | Varian | Gaya | Kegunaan |
 |--------|------|---------|
-| **Utama** | bg: `--color-navy`, teks putih, `radius-sm` | Aksi primer (Simpan, Kirim, Submit) |
-| **Sekunder** | border `--color-navy`, bg transparan, teks navy | Aksi sekunder (Batal, Kembali) |
-| **Aksen** | bg: `--color-violet`, teks putih, `radius-sm` | Hanya pada latar gelap (Navy/Deep Navy) |
+| **Utama** | bg: `--color-navy`, teks putih, `radius-md` (8px) | Aksi primer (Simpan, Kirim, Tambah) |
+| **Sekunder** | border `--color-navy`, bg transparan, teks navy, `radius-md` (8px) | Aksi sekunder (Batal, Filter, Kembali) |
+| **Aksen** | bg: `--color-violet`, teks putih, `radius-md` (8px) | Hanya pada latar gelap (Navy/Deep Navy) |
 | **Teks** | Tanpa border/bg, teks navy underline saat hover | Aksi tersier (tautan, detail) |
 
 Aturan tombol:
 - Jangan memakai violet sebagai tombol di latar putih/Mist.
-- Semua tombol menggunakan `radius-sm` (4px) — **bukan pill**.
+- Semua tombol menggunakan `radius-md` (8px) — **bukan pill**.
 - Teks tombol dalam **bahasa Indonesia**.
 
 #### Input / Form Field
 
-- Border: `1px solid var(--color-border)`, radius: `radius-sm` (4px).
-- Focus state: border berubah ke `--color-navy`, outline navy tipis.
+- Border: `1px solid var(--color-border)`, radius: `radius-sm` (6px).
+- Focus state: border berubah ke `--color-navy`, ring navy tipis (`focus:ring-1 focus:ring-ptkp-navy`).
 - Error state: border merah, pesan error di bawah field dalam bahasa Indonesia.
-- Placeholder: teks abu-abu, contoh format (misal: `Contoh: PTKP-2026-001`).
-- Label selalu di atas field, bukan placeholder pengganti label.
+- Placeholder: teks abu-abu, contoh format yang jelas.
+- Label selalu di atas field secara konsisten, bukan placeholder pengganti label.
 
 #### Kartu (Card)
 
 - Background: `--color-white`.
 - Border: `1px solid var(--color-border)`.
-- Radius: `radius-sm` (4px).
-- Bayangan hanya jika kartu bersifat interaktif atau mengambang.
-- Padding dalam: `--space-5` (24px).
+- Radius: `radius-lg` (12px) dengan `overflow-hidden`.
+- Elevasi: Menggunakan bayangan kartu halus (`shadow-card`) agar menyatu mulus di atas latar Mist.
+- Padding dalam: Header `px-6 py-4`, Konten `p-6` (24px).
 
 #### Badge / Tag
 
 - Menggunakan `radius-pill` (999px) — **satu-satunya komponen yang boleh pill**.
 - Warna badge: Navy (status aktif/verified), Violet di latar gelap, abu netral untuk status lain.
-- Contoh: badge "Terverifikasi" dengan bg Navy atau Violet.
+- Teks ringkas, ukuran font 12px (text-xs).
 
 #### Notifikasi / Alert
 
+- Radius: `radius-md` (8px).
 - Warna sesuai semantik: Navy (info), hijau tua (sukses), kuning tua (peringatan), merah tua (error).
 - Jangan memakai warna cerah/neon untuk notifikasi.
 
@@ -318,7 +322,7 @@ Aturan elemen grafis:
 ### 9a.9 Shell Aplikasi & Layout
 
 - **Satu shell** untuk semua modul: sidebar kiri, header atas, area konten utama.
-- Sidebar menggunakan latar **Deep Navy** (`#141A5C`) dengan teks dan ikon putih.
+- Sidebar menggunakan latar **Deep Navy** (`#141A5C`) dengan teks dan ikon putih. Item navigasi menggunakan `radius-md` (8px).
 - Item navigasi aktif: highlighted dengan Spark Violet atau Navy lebih terang.
 - Header: latar putih atau Navy, logo PERURI di kiri atas (minimal 120px lebar).
 - Area konten: latar **Mist** (`#EEF0FB`) atau putih.
@@ -328,14 +332,14 @@ Aturan elemen grafis:
 ### 9a.10 Larangan UI (HINDARI)
 
 - **Jangan** memakai Spark Violet sebagai warna teks di atas latar putih/Mist.
-- **Jangan** memakai `border-radius` besar (>8px) pada kartu atau tombol biasa.
+- **Jangan** memakai `border-radius` ekstrem (>16px) pada kartu atau tombol biasa.
 - **Jangan** memakai gradien warna-warni atau efek glassmorphism tanpa persetujuan.
 - **Jangan** membuat komponen baru jika komponen yang ada sudah bisa dipakai.
 - **Jangan** memakai font selain Lexend dan Inter.
 - **Jangan** memakai spasi sembarangan — semua harus dari token spacing (kelipatan 4px).
 - **Jangan** menaruh logo di atas latar selain putih atau Mist.
 - **Jangan** mengubah proporsi, warna, atau orientasi logo.
-- **Jangan** memakai bayangan berat atau berwarna selain turunan Navy.
+- **Jangan** memakai bayangan berat atau berwarna selain turunan Deep Navy.
 - **Jangan** membuat tombol berbentuk pill (radius-pill hanya untuk badge/tag).
 
 ## 10. Pengujian

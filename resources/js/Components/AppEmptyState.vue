@@ -11,7 +11,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center text-center py-12 px-6 bg-white border border-ptkp-border rounded-sm shadow-flat">
+  <div class="flex flex-col items-center justify-center text-center py-12 px-6 bg-white rounded-xl shadow-card">
     <!-- Ilustrasi Geometri Atap Limas Warisan Pabrik PTKP -->
     <div class="w-28 h-20 mb-3" aria-hidden="true">
       <svg viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
