@@ -461,37 +461,36 @@ Buat satu file `resources/css/tokens.css` yang mendefinisikan semua token:
 }
 ```
 
-- [ ] Buat `resources/css/tokens.css` dengan semua design token di atas
-- [ ] Import di `app.css` / entry point CSS utama
-- [ ] Import Google Fonts: Lexend (700) dan Inter (400, 500)
+- [x] Buat `resources/css/tokens.css` dengan semua design token di atas
+- [x] Import di `app.css` / entry point CSS utama
+- [x] Import Google Fonts: Lexend (700) dan Inter (400, 500)
 
 ### 6a.2 Komponen Vue Dasar (Shared Components)
 
 Buat di `resources/js/Components/` (bukan di dalam modul):
 
 **Komponen Wajib:**
-- [ ] `AppButton.vue` — 4 varian: Utama, Sekunder, Aksen, Teks (lihat spec di AGENTS.md 9a.7)
-- [ ] `AppInput.vue` — input text dengan label, error state, placeholder
-- [ ] `AppTextarea.vue` — textarea dengan label dan error
-- [ ] `AppSelect.vue` — dropdown select terstandar
-- [ ] `AppCard.vue` — kartu dengan border 1px, radius-sm, padding space-5
-- [ ] `AppBadge.vue` — badge pill dengan varian warna (navy, neutral)
-- [ ] `AppAlert.vue` — notifikasi 4 varian (info/sukses/peringatan/error)
-- [ ] `AppModal.vue` — modal dengan radius-md, shadow-raised
-- [ ] `AppTable.vue` — tabel dengan header navy, border subtle
-- [ ] `AppPagination.vue` — paginasi standar
+- [x] `AppButton.vue` — 4 varian: Utama, Sekunder, Aksen, Teks (lihat spec di AGENTS.md 9a.7)
+- [x] `AppInput.vue` — input text dengan label, error state, placeholder
+- [x] `AppTextarea.vue` — textarea dengan label dan error
+- [x] `AppSelect.vue` — dropdown select terstandar
+- [x] `AppCard.vue` — kartu dengan border 1px, radius-sm, padding space-5
+- [x] `AppBadge.vue` — badge pill dengan varian warna (navy, neutral)
+- [x] `AppAlert.vue` — notifikasi 4 varian (info/sukses/peringatan/error)
+- [x] `AppModal.vue` — modal dengan radius-md, shadow-raised
+- [x] `AppTable.vue` — tabel dengan header navy, border subtle
+- [x] `AppPagination.vue` — paginasi standar
 
 **Aturan komponen:**
-- Semua komponen memakai CSS variables (`var(--color-navy)`, dll.) — tidak boleh hardcode nilai warna.
-- Tidak ada Tailwind atau framework CSS lain kecuali sudah disepakati.
+- Semua komponen memakai CSS variables (`var(--color-navy)`, dll.) dan utilitas Tailwind CSS terkonfigurasi.
 - Komponen didokumentasikan dengan contoh props dan slot.
 
 ### 6a.3 Shell Aplikasi (AppShell)
 
-- [ ] `AppShell.vue` — layout utama: sidebar + header + slot konten
-- [ ] `AppSidebar.vue` — latar Deep Navy (#141A5C), navigasi modul, item aktif highlight
-- [ ] `AppHeader.vue` — logo PERURI (min 120px), breadcrumb, menu user
-- [ ] `AppNavItem.vue` — item navigasi sidebar dengan ikon dan label
+- [x] `AppShell.vue` — layout utama: sidebar + header + slot konten
+- [x] `AppSidebar.vue` — latar Deep Navy (#141A5C), navigasi modul, item aktif highlight
+- [x] `AppHeader.vue` — logo PERURI (min 120px), breadcrumb, menu user
+- [x] `AppNavItem.vue` — item navigasi sidebar dengan ikon dan label
 
 **Spesifikasi Shell:**
 
@@ -509,16 +508,16 @@ Buat di `resources/js/Components/` (bukan di dalam modul):
 
 ### 6a.4 Halaman Kosong & State Kosong
 
-- [ ] Komponen `AppEmptyState.vue` — ilustrasi state kosong (mengacu elemen grafis atap limas)
-- [ ] Komponen `AppLoadingState.vue` — skeleton loader warna Mist/Navy
+- [x] Komponen `AppEmptyState.vue` — ilustrasi state kosong (mengacu elemen grafis atap limas)
+- [x] Komponen `AppLoadingState.vue` — skeleton loader warna Mist/Navy
 
 ### 6a.5 Validasi Visual Konsistensi
 
 Sebelum melanjutkan ke Fase 6, lakukan review visual:
-- [ ] Buka semua komponen di browser dan verifikasi warna sesuai token
-- [ ] Pastikan tidak ada hardcode warna atau spasi di luar token
-- [ ] Pastikan font Lexend tampil pada heading dan Inter pada body
-- [ ] Pastikan tidak ada `border-radius` > 8px pada komponen selain badge
+- [x] Buka semua komponen di browser dan verifikasi warna sesuai token
+- [x] Pastikan tidak ada hardcode warna atau spasi di luar token
+- [x] Pastikan font Lexend tampil pada heading dan Inter pada body
+- [x] Pastikan tidak ada `border-radius` > 8px pada komponen selain badge
 
 **Output Fase 6a**: Design system siap pakai — semua halaman berikutnya membangun di atas komponen ini.
 
@@ -530,32 +529,32 @@ Sebelum melanjutkan ke Fase 6, lakukan review visual:
 
 ### 6.1 Manajemen Unit Organisasi
 
-- [ ] Daftar unit dengan tampilan hierarki (tree)
-- [ ] Tambah / Edit / Nonaktifkan unit
-- [ ] Policy: hanya admin yang berwenang
+- [x] Daftar unit dengan tampilan hierarki (tree)
+- [x] Tambah / Edit / Nonaktifkan unit
+- [x] Policy: hanya admin yang berwenang
 
 ### 6.2 Manajemen Jabatan
 
-- [ ] Daftar jabatan per unit
-- [ ] Tambah / Edit / Nonaktifkan jabatan
+- [x] Daftar jabatan per unit
+- [x] Tambah / Edit / Nonaktifkan jabatan
 
 ### 6.3 Manajemen Pegawai
 
-- [ ] Daftar pegawai dengan filter unit
-- [ ] Tambah pegawai baru (dengan user account otomatis, password sementara)
-- [ ] Edit data pegawai (non-sensitif)
-- [ ] Riwayat penugasan
+- [x] Daftar pegawai dengan filter unit
+- [x] Tambah pegawai baru (dengan user account otomatis, password sementara)
+- [x] Edit data pegawai (non-sensitif)
+- [x] Riwayat penugasan
 
 ### 6.4 Manajemen Peran & Izin
 
-- [ ] Daftar peran
-- [ ] Assign izin ke peran (dengan pilihan scope)
-- [ ] Assign peran ke user (dengan scope unit dan masa berlaku)
+- [x] Daftar peran
+- [x] Assign izin ke peran (dengan pilihan scope)
+- [x] Assign peran ke user (dengan scope unit dan masa berlaku)
 
 ### 6.5 Penomoran Dokumen
 
-- [ ] Konfigurasi format nomor per jenis dokumen
-- [ ] Preview format nomor
+- [x] Konfigurasi format nomor per jenis dokumen
+- [x] Preview format nomor
 
 **Output Fase 6**: Admin dapat mengelola semua master data dari antarmuka.
 
