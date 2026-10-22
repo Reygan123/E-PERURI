@@ -139,4 +139,21 @@ class DirectoryService implements DirectoryServiceInterface
 
         return in_array($assignedUnitId, $subordinateIds, true);
     }
+
+    /**
+     * Get all active organizational units.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function getAllOrgUnits(): array
+    {
+        /** @var list<array<string, mixed>> $units */
+        $units = OrgUnit::where('is_active', true)
+            ->orderBy('level')
+            ->orderBy('name')
+            ->get(['id', 'code', 'name', 'level', 'type'])
+            ->toArray();
+
+        return $units;
+    }
 }

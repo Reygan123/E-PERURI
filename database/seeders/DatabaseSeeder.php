@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Modules\Platform\database\seeders\DevelopmentUserSeeder;
-use App\Modules\Platform\database\seeders\OrgUnitSeeder;
-use App\Modules\Platform\database\seeders\RoleAndPermissionSeeder;
+use App\Modules\Arsip\Database\Seeders\LetterTypeSeeder;
+use App\Modules\Platform\Database\Seeders\DevelopmentUserSeeder;
+use App\Modules\Platform\Database\Seeders\NumberingFormatSeeder;
+use App\Modules\Platform\Database\Seeders\OrgUnitSeeder;
+use App\Modules\Platform\Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +20,8 @@ class DatabaseSeeder extends Seeder
             OrgUnitSeeder::class,
             RoleAndPermissionSeeder::class,
             DevelopmentUserSeeder::class,
+            NumberingFormatSeeder::class,
+            LetterTypeSeeder::class,
         ]);
     }
 }

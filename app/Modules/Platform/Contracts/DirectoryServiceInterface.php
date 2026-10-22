@@ -36,4 +36,11 @@ interface DirectoryServiceInterface
      * Check if an employee belongs to an organizational unit or its descendants.
      */
     public function isEmployeeInOrgUnit(string $employeeId, string $orgUnitId, bool $recursive = true): bool;
+
+    /**
+     * Get all active organizational units.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function getAllOrgUnits(): array;
 }

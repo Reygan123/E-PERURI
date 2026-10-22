@@ -90,7 +90,7 @@ return [
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
-            'search_path' => env('DB_SCHEMA', 'platform,public'),
+            'search_path' => env('DB_SCHEMA', 'platform,arsip,layanan,pembelajaran,sdm,manufaktur,public'),
             'sslmode' => 'prefer',
         ],
 
