@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Platform\database\seeders;
 
 use App\Modules\Platform\Models\Permission;
 use App\Modules\Platform\Models\Role;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class RoleAndPermissionSeeder extends Seeder
 {
@@ -32,7 +33,6 @@ class RoleAndPermissionSeeder extends Seeder
             $permissionModels[$p['name']] = Permission::updateOrCreate(
                 ['name' => $p['name']],
                 [
-                    'id' => (string) Str::uuid(),
                     'label' => $p['label'],
                     'module' => $p['module'],
                 ]
@@ -80,7 +80,6 @@ class RoleAndPermissionSeeder extends Seeder
             $role = Role::updateOrCreate(
                 ['name' => $name],
                 [
-                    'id' => (string) Str::uuid(),
                     'label' => $data['label'],
                 ]
             );

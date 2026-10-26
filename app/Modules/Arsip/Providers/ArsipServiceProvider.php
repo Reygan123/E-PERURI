@@ -2,6 +2,9 @@
 
 namespace App\Modules\Arsip\Providers;
 
+use App\Modules\Arsip\Models\Letter;
+use App\Modules\Arsip\Policies\LetterPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class ArsipServiceProvider extends ServiceProvider
@@ -24,5 +27,7 @@ class ArsipServiceProvider extends ServiceProvider
         }
 
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        Gate::policy(Letter::class, LetterPolicy::class);
     }
 }

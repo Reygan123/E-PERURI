@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Job Description & Specification System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            body { background: white !important; color: black !important; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            .print-shadow { box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
+        }
+        .print-only { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 h-full flex flex-col font-sans antialiased overflow-hidden">
+
+    <!-- Top Notification Toast -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-200%] transition-all duration-300 bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-lg flex items-center space-x-2 text-sm font-medium">
+        <i data-lucide="check-circle" class="w-5 h-5"></i>
+        <span id="toast-message">Berhasil menyimpan perubahan!</span>
+    </div>
+
+    <!-- Main Container -->
+    <div class="flex h-screen w-screen overflow-hidden">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-72 bg-slate-900 text-slate-300 flex flex-col no-print z-20 shadow-xl">
+            <div class="p-6 border-b border-slate-800 flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2.5 rounded-xl text-white shadow-md shadow-indigo-500/30">
+                    <i data-lucide="briefcase" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-white tracking-wide text-base">E-JobDesk Pro</h1>
+                    <p class="text-xs text-slate-400">Sistem Analisis Jabatan</p>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+                <a href="#overview" onclick="switchTab('overview')" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all bg-indigo-600 text-white shadow-lg shadow-indigo-600/30">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard & Ringkasan</span>
+                </a>
+                <a href="#identity" onclick="switchTab('identity')" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800 hover:text-white text-slate-400">
+                    <i data-lucide="user-check" class="w-5 h-5"></i>
+                    <span>1. Identitas & Ringkasan</span>
+                </a>
+                <a href="#tasks" onclick="switchTab('tasks')" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800 hover:text-white text-slate-400">
+                    <i data-lucide="list-todo" class="w-5 h-5"></i>
+                    <span>2. Tugas Utama & Aktivitas</span>
+                </a>
+                <a href="#governance" onclick="switchTab('governance')" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800 hover:text-white text-slate-400">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    <span>3. Tanggung Jawab & Wewenang</span>
+                </a>
+                <a href="#specification" onclick="switchTab('specification')" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800 hover:text-white text-slate-400">
+                    <i data-lucide="award" class="w-5 h-5"></i>
+                    <span>4. Job Specification (Skill)</span>
+                </a>
+                <a href="#standards" onclick="switchTab('standards')" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800 hover:text-white text-slate-400">
+                    <i data-lucide="target" class="w-5 h-5"></i>
+                    <span>5. Job Standard & Target</span>
+                </a>
+                <a href="#approval" onclick="switchTab('approval')" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800 hover:text-white text-slate-400">
+                    <i data-lucide="file-signature" class="w-5 h-5"></i>
+                    <span>6. Persetujuan & Approval</span>
+                </a>
+                <a href="#preview" onclick="switchTab('preview')" class="nav-link flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800 hover:text-white text-slate-400 border border-slate-700/50 mt-4 bg-slate-800/50 text-indigo-400">
+                    <i data-lucide="printer" class="w-5 h-5"></i>
+                    <span>Cetak Dokumen Korporat</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-slate-800">
+                <button onclick="resetData()" class="w-full flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 px-4 rounded-xl text-xs font-semibold transition-colors border border-slate-700">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    <span>Reset Data Default</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 flex flex-col overflow-hidden bg-slate-100">
+            
+            <!-- Top Navbar Header -->
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 no-print shadow-sm z-10">
+                <div class="flex items-center space-x-3">
+                    <span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-indigo-100" id="header-dept-badge">Departemen IT</span>
+                    <h2 class="text-lg font-bold text-slate-800" id="header-title">Software Engineer / Fullstack Developer</h2>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="saveData()" class="flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-sm shadow-emerald-500/20">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        <span>Simpan Data</span>
+                    </button>
+                    <button onclick="switchTab('preview')" class="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-sm shadow-indigo-500/20">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        <span>Preview & Cetak</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Scrollable Content Container -->
+            <div class="flex-1 overflow-y-auto p-8">
+                <div class="max-w-5xl mx-auto space-y-6">
+
+                    <!-- TAB 1: OVERVIEW / DASHBOARD -->
+                    <div id="tab-overview" class="tab-content space-y-6">
+                        <div class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl p-8 text-white shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center">
+                            <div class="space-y-2 mb-6 md:mb-0">
+                                <span class="bg-white/20 text-white px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wider backdrop-blur-sm">Dashboard Analisis Jabatan</span>
+                                <h2 class="text-2xl md:text-3xl font-extrabold" id="ov-jabatan">Software Engineer</h2>
+                                <p class="text-indigo-100 text-sm max-w-xl" id="ov-ringkasan">Merancang, mengembangkan, dan memelihara aplikasi digital perusahaan dengan standar kualitas tertinggi.</p>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 space-y-3 min-w-[220px]">
+                                <div class="text-xs uppercase tracking-wider text-indigo-200">Status Persetujuan</div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span class="font-bold text-sm" id="ov-status">Disetujui Kepala Departemen</span>
+                                </div>
+                                <div class="text-xs text-indigo-200 pt-1 border-t border-white/10">Grade: <span id="ov-grade" class="font-bold text-white">12 (Senior)</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Statistics Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                                <div class="p-3 bg-blue-50 text-blue-600 rounded-2xl">
+                                    <i data-lucide="layers" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-medium text-slate-500 uppercase">Tugas Utama</div>
+                                    <div class="text-2xl font-bold text-slate-800" id="stat-tasks">5 Aktivitas</div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                                <div class="p-3 bg-emerald-50 text-emerald-600 rounded-2xl">
+                                    <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-medium text-slate-500 uppercase">Indikator Kerja</div>
+                                    <div class="text-2xl font-bold text-slate-800" id="stat-standards">4 Target</div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                                <div class="p-3 bg-amber-50 text-amber-600 rounded-2xl">
+                                    <i data-lucide="cpu" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-medium text-slate-500 uppercase">Hard Skills</div>
+                                    <div class="text-2xl font-bold text-slate-800" id="stat-hard">4 Keahlian</div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                                <div class="p-3 bg-purple-50 text-purple-600 rounded-2xl">
+                                    <i data-lucide="users" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-medium text-slate-500 uppercase">Soft Skills</div>
+                                    <div class="text-2xl font-bold text-slate-800" id="stat-soft">3 Keahlian</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Summary Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                                <h3 class="font-bold text-slate-800 flex items-center space-x-2 text-base">
+                                    <i data-lucide="info" class="w-5 h-5 text-indigo-600"></i>
+                                    <span>Informasi Organisasi</span>
+                                </h3>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                        <span class="text-slate-500">Nama Pemegang</span>
+                                        <span class="font-medium text-slate-800" id="sum-nama">-</span>
+                                    </div>
+                                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                        <span class="text-slate-500">Departemen</span>
+                                        <span class="font-medium text-slate-800" id="sum-dept">-</span>
+                                    </div>
+                                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                        <span class="text-slate-500">Seksi/Unit</span>
+                                        <span class="font-medium text-slate-800" id="sum-seksi">-</span>
+                                    </div>
+                                    <div class="flex justify-between py-1.5">
+                                        <span class="text-slate-500">Atasan Langsung</span>
+                                        <span class="font-medium text-slate-800" id="sum-atasan">-</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                                <h3 class="font-bold text-slate-800 flex items-center space-x-2 text-base">
+                                    <i data-lucide="graduation-cap" class="w-5 h-5 text-indigo-600"></i>
+                                    <span>Spesifikasi Jabatan Utama</span>
+                                </h3>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                        <span class="text-slate-500">Pendidikan Minimal</span>
+                                        <span class="font-medium text-slate-800 truncate max-w-[200px]" id="sum-edu">-</span>
+                                    </div>
+                                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                        <span class="text-slate-500">Pengalaman Kerja</span>
+                                        <span class="font-medium text-slate-800 truncate max-w-[200px]" id="sum-exp">-</span>
+                                    </div>
+                                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                        <span class="text-slate-500">Sertifikasi Wajib</span>
+                                        <span class="font-medium text-slate-800 truncate max-w-[200px]" id="sum-cert">-</span>
+                                    </div>
+                                    <div class="flex justify-between py-1.5">
+                                        <span class="text-slate-500">Rekomendasi Grade</span>
+                                        <span class="font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded" id="sum-grade">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: IDENTITAS & RINGKASAN -->
+                    <div id="tab-identity" class="tab-content hidden space-y-6">
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                            <div class="border-b border-slate-100 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">Identitas Pekerjaan & Organisasi</h3>
+                                <p class="text-slate-500 text-sm">Lengkapi data profil jabatan dan hubungan koordinasi operasional.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Nama Pegawai / Pemegang</label>
+                                    <input type="text" id="form-nama" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Jabatan / Pekerjaan</label>
+                                    <input type="text" id="form-jabatan" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Departemen</label>
+                                    <input type="text" id="form-departemen" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Seksi / Unit</label>
+                                    <input type="text" id="form-seksi" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Atasan Langsung</label>
+                                    <input type="text" id="form-atasan" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Rekomendasi Grade</label>
+                                    <input type="text" id="form-grade" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-100">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Bawahan Langsung</label>
+                                    <textarea id="form-bawahan" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1. Junior Developer..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Koordinasi Internal</label>
+                                    <textarea id="form-koord-internal" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1. Tim QA, Tim DevOps..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Koordinasi Eksternal/Mitra</label>
+                                    <textarea id="form-koord-eksternal" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1. Vendor API, Klien..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-slate-100 space-y-4">
+                                <h4 class="font-bold text-slate-800 text-base">Ringkasan Pekerjaan (Tujuan / Sasaran Tugas Utama)</h4>
+                                <textarea id="form-ringkasan" rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tuliskan tujuan utama jabatan..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: TUGAS UTAMA & AKTIVITAS -->
+                    <div id="tab-tasks" class="tab-content hidden space-y-6">
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                            <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-800">Tugas Utama & Rincian Aktivitas</h3>
+                                    <p class="text-slate-500 text-sm">Kelola daftar tugas pokok serta rincian kegiatan harian/bulanan.</p>
+                                </div>
+                                <button onclick="addTaskRow()" class="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                    <span>Tambah Tugas Utama</span>
+                                </button>
+                            </div>
+
+                            <div id="tasks-container" class="space-y-4">
+                                <!-- Dynamic Task Rows will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: TANGGUNG JAWAB, WEWENANG & LINGKUNGAN -->
+                    <div id="tab-governance" class="tab-content hidden space-y-6">
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                            <div class="border-b border-slate-100 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">Tanggung Jawab, Wewenang & Lingkungan Kerja</h3>
+                                <p class="text-slate-500 text-sm">Definisikan akuntabilitas dan ruang lingkup operasional pekerjaan.</p>
+                            </div>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Tanggung Jawab</label>
+                                        <button onclick="addListField('tanggung-jawab-container', 'tanggungJawab')" class="text-xs text-indigo-600 font-semibold hover:underline flex items-center space-x-1"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Tambah</span></button>
+                                    </div>
+                                    <div id="tanggung-jawab-container" class="space-y-2"></div>
+                                </div>
+
+                                <div class="pt-4 border-t border-slate-100">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Wewenang</label>
+                                        <button onclick="addListField('wewenang-container', 'wewenang')" class="text-xs text-indigo-600 font-semibold hover:underline flex items-center space-x-1"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Tambah</span></button>
+                                    </div>
+                                    <div id="wewenang-container" class="space-y-2"></div>
+                                </div>
+
+                                <div class="pt-4 border-t border-slate-100">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Lingkungan Kerja</label>
+                                        <button onclick="addListField('lingkungan-container', 'lingkunganKerja')" class="text-xs text-indigo-600 font-semibold hover:underline flex items-center space-x-1"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Tambah</span></button>
+                                    </div>
+                                    <div id="lingkungan-container" class="space-y-2"></div>
+                                </div>
+
+                                <div class="pt-4 border-t border-slate-100">
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Tugas Lain-lain</label>
+                                    <textarea id="form-tugas-lain" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tugas tambahan yang diberikan atasan..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: JOB SPECIFICATION -->
+                    <div id="tab-specification" class="tab-content hidden space-y-6">
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                            <div class="border-b border-slate-100 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">Job Specification (Persyaratan & Kompetensi)</h3>
+                                <p class="text-slate-500 text-sm">Tentukan kualifikasi minimum dan keahlian yang dibutuhkan.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Tingkat Pendidikan / Keahlian</label>
+                                    <input type="text" id="form-pendidikan" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Pengalaman Kerja</label>
+                                    <input type="text" id="form-pengalaman" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Sertifikasi Wajib</label>
+                                    <input type="text" id="form-sertifikasi" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Pelatihan Pendukung</label>
+                                    <input type="text" id="form-pelatihan" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Hard Skills</label>
+                                        <button onclick="addListField('hard-skills-container', 'hardSkills')" class="text-xs text-indigo-600 font-semibold hover:underline flex items-center space-x-1"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Tambah</span></button>
+                                    </div>
+                                    <div id="hard-skills-container" class="space-y-2"></div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Soft Skills</label>
+                                        <button onclick="addListField('soft-skills-container', 'softSkills')" class="text-xs text-indigo-600 font-semibold hover:underline flex items-center space-x-1"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Tambah</span></button>
+                                    </div>
+                                    <div id="soft-skills-container" class="space-y-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 6: JOB STANDARD -->
+                    <div id="tab-standards" class="tab-content hidden space-y-6">
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                            <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-800">Job Standard (Indikator & Target Kinerja)</h3>
+                                    <p class="text-slate-500 text-sm">Tentukan indikator keberhasilan pekerjaan dan target terukur.</p>
+                                </div>
+                                <button onclick="addStandardRow()" class="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                    <span>Tambah Standar</span>
+                                </button>
+                            </div>
+
+                            <div id="standards-container" class="space-y-4">
+                                <!-- Dynamic Standard Rows -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 7: APPROVAL / PERSETUJUAN -->
+                    <div id="tab-approval" class="tab-content hidden space-y-6">
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                            <div class="border-b border-slate-100 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">Persetujuan & Validasi Dokumen</h3>
+                                <p class="text-slate-500 text-sm">Informasi pejabat yang membuat, memeriksa, dan menyetujui job description.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                                    <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Dibuat oleh</div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Jabatan / Kepala Unit</label>
+                                        <input type="text" id="app-maker-role" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Nama Pejabat</label>
+                                        <input type="text" id="app-maker-name" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal</label>
+                                        <input type="date" id="app-maker-date" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                                    <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Diperiksa oleh</div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Jabatan / Kepala Seksi</label>
+                                        <input type="text" id="app-checker-role" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Nama Pejabat</label>
+                                        <input type="text" id="app-checker-name" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal</label>
+                                        <input type="date" id="app-checker-date" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                                    <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Disetujui oleh</div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Jabatan / Kadep</label>
+                                        <input type="text" id="app-approver-role" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Nama Pejabat</label>
+                                        <input type="text" id="app-approver-name" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal</label>
+                                        <input type="date" id="app-approver-date" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 8: PREVIEW / CETAK LAPORAN KORPORAT -->
+                    <div id="tab-preview" class="tab-content hidden space-y-6">
+                        <div class="flex justify-between items-center no-print bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                            <span class="text-sm font-medium text-slate-600">Pratinjau Dokumen Siap Cetak (Format Korporat Resmi)</span>
+                            <button onclick="window.print()" class="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-indigo-500/20 transition-all">
+                                <i data-lucide="printer" class="w-4 h-4"></i>
+                               <span>Cetak / Export PDF</span>
+                            </button>
+                        </div>
+
+                        <!-- Printable Sheet Container -->
+                        <div id="printable-area" class="bg-white text-slate-900 p-10 rounded-3xl shadow-lg border border-slate-200 print-shadow space-y-8 font-sans">
+                            
+                            <!-- Corporate Header -->
+                            <div class="border-b-2 border-slate-900 pb-6 flex justify-between items-start">
+                                <div>
+                                    <div class="text-xs font-bold uppercase tracking-widest text-indigo-600">PT KORPORASI DIGITAL NUSANTARA</div>
+                                    <h1 class="text-2xl font-black text-slate-900 mt-1">JOB DESCRIPTION & SPECIFICATION</h1>
+                                </div>
+                                <div class="text-right text-xs text-slate-500">
+                                    <div>Dokumen No: SOP/HRD/JD-042</div>
+                                    <div>Status: <span class="font-bold text-emerald-600">ACTIVE / APPROVED</span></div>
+                                </div>
+                            </div>
+
+                            <!-- 1. Identitas Pekerjaan -->
+                            <div class="space-y-3">
+                                <h3 class="bg-slate-900 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg">1. Identitas Pekerjaan</h3>
+                                <table class="w-full text-sm border-collapse border border-slate-300">
+                                    <tbody>
+                                        <tr>
+                                            <td class="w-1/4 p-2.5 font-semibold bg-slate-50 border border-slate-300">Nama</td>
+                                            <td class="w-1/4 p-2.5 border border-slate-300" id="print-nama">-</td>
+                                            <td class="w-1/4 p-2.5 font-semibold bg-slate-50 border border-slate-300">Atasan Langsung</td>
+                                            <td class="w-1/4 p-2.5 border border-slate-300" id="print-atasan">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-semibold bg-slate-50 border border-slate-300">Jabatan / Pekerjaan</td>
+                                            <td class="p-2.5 border border-slate-300" id="print-jabatan">-</td>
+                                            <td class="p-2.5 font-semibold bg-slate-50 border border-slate-300">Bawahan Langsung</td>
+                                            <td class="p-2.5 border border-slate-300" id="print-bawahan">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-semibold bg-slate-50 border border-slate-300">Departemen</td>
+                                            <td class="p-2.5 border border-slate-300" id="print-departemen">-</td>
+                                            <td class="p-2.5 font-semibold bg-slate-50 border border-slate-300">Koordinasi Internal</td>
+                                            <td class="p-2.5 border border-slate-300" id="print-koord-internal">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-semibold bg-slate-50 border border-slate-300">Seksi / Unit</td>
+                                            <td class="p-2.5 border border-slate-300" id="print-seksi">-</td>
+                                            <td class="p-2.5 font-semibold bg-slate-50 border border-slate-300">Koordinasi Eksternal</td>
+                                            <td class="p-2.5 border border-slate-300" id="print-koord-eksternal">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-semibold bg-slate-50 border border-slate-300" colspan="2">Rekomendasi Grade</td>
+                                            <td class="p-2.5 border border-slate-300 font-bold text-indigo-600" colspan="2" id="print-grade">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- 2. Ringkasan Pekerjaan -->
+                            <div class="space-y-3">
+                                <h3 class="bg-slate-900 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg">2. Ringkasan Pekerjaan</h3>
+                                <div class="border border-slate-300 p-4 rounded-lg bg-slate-50/50 text-sm leading-relaxed" id="print-ringkasan">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- 3. Tugas Utama & Pokok -->
+                            <div class="space-y-3">
+                                <h3 class="bg-slate-900 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg">3. Tugas Utama & Rincian Aktivitas</h3>
+                                <table class="w-full text-sm border-collapse border border-slate-300">
+                                    <thead>
+                                        <tr class="bg-slate-100">
+                                            <th class="border border-slate-300 p-2.5 text-center w-12">No</th>
+                                            <th class="border border-slate-300 p-2.5 text-left w-1/3">Aktivitas Utama</th>
+                                            <th class="border border-slate-300 p-2.5 text-left">Rincian Aktivitas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="print-tasks-table">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- 4. Tugas Lain, Tanggung Jawab & Wewenang -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-3">
+                                    <h3 class="bg-slate-900 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg">4. Tanggung Jawab</h3>
+                                    <div class="border border-slate-300 p-4 rounded-lg bg-slate-50/50 text-sm">
+                                        <ul id="print-tanggung-jawab-list" class="list-disc pl-5 space-y-1"></ul>
+                                    </div>
+                                </div>
+                                <div class="space-y-3">
+                                    <h3 class="bg-slate-900 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg">5. Wewenang</h3>
+                                    <div class="border border-slate-300 p-4 rounded-lg bg-slate-50/50 text-sm">
+                                        <ul id="print-wewenang-list" class="list-disc pl-5 space-y-1"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 6. Lingkungan Kerja & Tugas Lain -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-3">
+                                    <h3 class="bg-slate-900 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg">6. Lingkungan Kerja</h3>
+                                    <div class="border border-slate-300 p-4 rounded-lg bg-slate-50/50 text-sm">
+                                        <ul id="print-lingkungan-list" class="list-disc pl-5 space-y-1"></ul>
+                                    </div>
+                                </div>
+                                <div class="space-y-3">
+                                    <h3 class="bg-slate-900 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg">7. Tugas Lain-lain</h3>
+                                    <div class="border border-slate-300 p-4 rounded-lg bg-slate-50/50 text-sm" id="print-tugas-lain">
+                                        -
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 8. Job Specification -->
+                            <div class="space-y-3">
+                                <h3 class="bg-slate-900 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg">8. Job Specification (Spesifikasi Pekerjaan)</h3>
+                                <table class="w-full text-sm border-collapse border border-slate-300">
+                                    <thead>
+                                        <tr class="bg-slate-100">
+                                            <th class="border border-slate-300 p-2.5 text-left w-1/3">Klasifikasi</th>
+                                            <th class="border border-slate-300 p-2.5 text-left">Spesifikasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border border-slate-300 p-2.5 font-semibold bg-slate-50">Tingkat Pendidikan</td>
+                                            <td class="border border-slate-300 p-2.5" id="print-pendidikan">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border border-slate-300 p-2.5 font-semibold bg-slate-50">Pengalaman Kerja</td>
+                                            <td class="border border-slate-300 p-2.5" id="print-pengalaman">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border border-slate-300 p-2.5 font-semibold bg-slate-50">Sertifikasi & Pelatihan</td>
+                                            <td class="border border-slate-300 p-2.5" id="print-sertifikasi-pelatihan">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border border-slate-300 p-2.5 font-semibold bg-slate-50">Hard Skills</td>
+                                            <td class="border border-slate-300 p-2.5">
+                                                <ul id="print-hard-skills" class="list-disc pl-4 space-y-0.5"></ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border border-slate-300 p-2.5 font-semibold bg-slate-50">Soft Skills</td>
+                                            <td class="border border-slate-300 p-2.5">
+                                                <ul id="print-soft-skills" class="list-disc pl-4 space-y-0.5"></ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- 9. Job Standard -->
+                            <div class="space-y-3">
+                                <h3 class="bg-slate-900 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg">9. Job Standard (Indikator & Target Kinerja)</h3>
+                                <table class="w-full text-sm border-collapse border border-slate-300">
+                                    <thead>
+                                        <tr class="bg-slate-100">
+                                            <th class="border border-slate-300 p-2.5 text-center w-12">No</th>
+                                            <th class="border border-slate-300 p-2.5 text-left">Indikator Pekerjaan</th>
+                                            <th class="border border-slate-300 p-2.5 text-left">Target Pekerjaan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="print-standards-table">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- 10. Approval Signatures -->
+                            <div class="pt-8 grid grid-cols-3 gap-6 text-center text-sm">
+                                <div class="space-y-16 border border-slate-200 p-4 rounded-xl">
+                                    <div class="font-bold uppercase tracking-wider text-xs text-slate-600" id="prn-maker-title">Dibuat oleh,<br>Kepala Unit</div>
+                                    <div class="border-b border-slate-400 w-3/4 mx-auto"></div>
+                                    <div>
+                                        <div class="font-bold text-slate-800" id="prn-maker-name">Nama Pejabat</div>
+                                        <div class="text-xs text-slate-500" id="prn-maker-date">Tanggal: -</div>
+                                    </div>
+                                </div>
+                                <div class="space-y-16 border border-slate-200 p-4 rounded-xl">
+                                    <div class="font-bold uppercase tracking-wider text-xs text-slate-600" id="prn-checker-title">Diperiksa oleh,<br>Kepala Seksi</div>
+                                    <div class="border-b border-slate-400 w-3/4 mx-auto"></div>
+                                    <div>
+                                        <div class="font-bold text-slate-800" id="prn-checker-name">Nama Pejabat</div>
+                                        <div class="text-xs text-slate-500" id="prn-checker-date">Tanggal: -</div>
+                                    </div>
+                                </div>
+                                <div class="space-y-16 border border-slate-200 p-4 rounded-xl">
+                                    <div class="font-bold uppercase tracking-wider text-xs text-slate-600" id="prn-approver-title">Disetujui oleh,<br>Kepala Departemen</div>
+                                    <div class="border-b border-slate-400 w-3/4 mx-auto"></div>
+                                    <div>
+                                        <div class="font-bold text-slate-800" id="prn-approver-name">Nama Pejabat</div>
+                                        <div class="text-xs text-slate-500" id="prn-approver-date">Tanggal: -</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Application Controller Script -->
+    <script>
+        // Initial Default State
+        const defaultData = {
+            identity: {
+                nama: "Ahmad Fauzi, S.Kom",
+                jabatan: "Software Engineer / Fullstack Developer",
+                departemen: "Information Technology (IT)",
+                seksi: "Software Development Unit",
+                atasanLangsung: "IT Development Manager",
+                bawahan: "1. Junior Frontend Developer\n2. Junior Backend Developer",
+                koordInternal: "1. Tim QA & Testing\n2. Tim Infrastruktur & DevOps",
+                koordEksternal: "1. Vendor API Pihak Ketiga\n2. Konsultan Keamanan Sistem",
+                rekomendasiGrade: "Grade 12 (Senior Professional)",
+                ringkasan: "Merancang, membangun, menguji, dan memelihara aplikasi digital perusahaan baik berbasis web maupun mobile guna mendukung efisiensi operasional bisnis secara menyeluruh dengan standar arsitektur sistem yang andal dan aman."
+            },
+            tasks: [
+                { aktivitas: "Perancangan Arsitektur Sistem", rincian: "[1]. Menganalisis kebutuhan sistem bisnis bersama Business Analyst.\n[2]. Membuat dokumentasi desain teknis (System Design & Database Schema)." },
+                { aktivitas: "Pengembangan Perangkat Lunak", rincian: "[1]. Menulis kode program bersih dan efisien (Frontend & Backend).\n[2]. Mengintegrasikan RESTful API dan layanan mikro." },
+                { aktivitas: "Pengujian & Quality Assurance", rincian: "[1]. Melakukan Unit Testing dan Debugging kode.\n[2]. Berkoordinasi dengan tim QA untuk memastikan bebas bug." },
+                { aktivitas: "Deployment & Pemeliharaan", rincian: "[1]. Melakukan deployment aplikasi ke staging/production server.\n[2]. Memonitor performa aplikasi dan menangani insiden teknis." }
+            ],
+            governance: {
+                tanggungJawab: [
+                    "Bertanggung jawab atas keandalan, keamanan, dan ketersediaan aplikasi perusahaan.",
+                    "Menjaga kerahasiaan data perusahaan dan akses database utama.",
+                    "Menyelesaikan proyek pengembangan perangkat lunak tepat waktu sesuai target sprint."
+                ],
+                wewenang: [
+                    "Memberikan otorisasi pull request dan code review bagi junior developer.",
+                    "Mengusulkan penggunaan teknologi atau framework baru yang lebih efisien.",
+                    "Menghentikan sementara deployment jika ditemukan kerentanan keamanan kritis."
+                ],
+                lingkunganKerja: [
+                    "Kantor pusat perusahaan dengan fasilitas kerja hybrid (WFO/WFH).",
+                    "Lingkungan kerja dinamis berbasis target dengan koordinasi intensif."
+                ],
+                tugasLain: "Melakukan riset teknologi terbaru untuk inovasi digital perusahaan serta memberikan bimbingan teknis kepada staf magang IT."
+            },
+            specification: {
+                pendidikan: "S1 Teknik Informatika / Ilmu Komputer / Sistem Informasi",
+                pengalaman: "Minimal 3 tahun pengalaman di bidang Software Engineering",
+                sertifikasi: "AWS Certified Developer / Professional Scrum Master (Diutamakan)",
+                pelatihan: "Advanced Web Security, Microservices Architecture",
+                hardSkills: [
+                    "JavaScript / TypeScript, Node.js, React.js",
+                    "REST API, GraphQL, PostgreSQL / MySQL",
+                    "Docker, Git Version Control, CI/CD Pipelines"
+                ],
+                softSkills: [
+                    "Analytical Thinking & Problem Solving",
+                    "Teamwork & Cross-functional Communication",
+                    "Time Management & Agile Adaptability"
+                ]
+            },
+            standards: [
+                { indikator: "Kecepatan & Ketepatan Penyelesaian Modul", target: "100% modul selesai sesuai sprint timeline dengan tingkat bug di bawah 5%." },
+                { indikator: "Code Quality & Documentation", target: "Review code lulus standar linting dan dokumentasi API lengkap di Swagger." },
+                { indikator: "Uptime & Performa Sistem", target: "Aplikasi berjalan dengan availability 99.9% dan load time rata-rata di bawah 2 detik." }
+            ],
+            approval: {
+                makerRole: "Kepala Unit IT Development",
+                makerName: "Budi Santoso, M.T.",
+                makerDate: "2026-03-01",
+                checkerRole: "Kepala Seksi Infrastruktur",
+                checkerName: "Dewi Lestari, S.T.",
+                checkerDate: "2026-03-02",
+                approverRole: "Kepala Departemen IT",
+                approverName: "Dr. Hendra Wijaya, M.Sc.",
+                approverDate: "2026-03-03"
+            }
+        };
+
+        let currentData = JSON.parse(localStorage.getItem('jobdesk_app_data')) || defaultData;
+
+        // Initialize Lucide Icons
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            loadDataToUI();
+            updateOverviewStats();
+            renderPrintView();
+        });
+
+        // Tab Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-600/30');
+                el.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+            });
+            
+            // Highlight active link
+            event.currentTarget.classList.add('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-600/30');
+            event.currentTarget.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+
+            if(tabId === 'preview') {
+                syncUItoData();
+                renderPrintView();
+            }
+            lucide.createIcons();
+        }
+
+        // Load Data into Input Forms
+        function loadDataToUI() {
+            // Identity
+            document.getElementById('form-nama').value = currentData.identity.nama;
+            document.getElementById('form-jabatan').value = currentData.identity.jabatan;
+            document.getElementById('form-departemen').value = currentData.identity.departemen;
+            document.getElementById('form-seksi').value = currentData.identity.seksi;
+            document.getElementById('form-atasan').value = currentData.identity.atasanLangsung;
+            document.getElementById('form-grade').value = currentData.identity.rekomendasiGrade;
+            document.getElementById('form-bawahan').value = currentData.identity.bawahan;
+            document.getElementById('form-koord-internal').value = currentData.identity.koordInternal;
+            document.getElementById('form-koord-eksternal').value = currentData.identity.koordEksternal;
+            document.getElementById('form-ringkasan').value = currentData.identity.ringkasan;
+
+            // Governance
+            document.getElementById('form-tugas-lain').value = currentData.governance.tugasLain;
+            renderListFields('tanggung-jawab-container', currentData.governance.tanggungJawab, 'tanggungJawab');
+            renderListFields('wewenang-container', currentData.governance.wewenang, 'wewenang');
+            renderListFields('lingkungan-container', currentData.governance.lingkunganKerja, 'lingkunganKerja');
+
+            // Specification
+            document.getElementById('form-pendidikan').value = currentData.specification.pendidikan;
+            document.getElementById('form-pengalaman').value = currentData.specification.pengalaman;
+            document.getElementById('form-sertifikasi').value = currentData.specification.sertifikasi;
+            document.getElementById('form-pelatihan').value = currentData.specification.pelatihan;
+            renderListFields('hard-skills-container', currentData.specification.hardSkills, 'hardSkills');
+            renderListFields('soft-skills-container', currentData.specification.softSkills, 'softSkills');
+
+            // Approval
+            document.getElementById('app-maker-role').value = currentData.approval.makerRole;
+            document.getElementById('app-maker-name').value = currentData.approval.makerName;
+            document.getElementById('app-maker-date').value = currentData.approval.makerDate;
+            document.getElementById('app-checker-role').value = currentData.approval.checkerRole;
+            document.getElementById('app-checker-name').value = currentData.approval.checkerName;
+            document.getElementById('app-checker-date').value = currentData.approval.checkerDate;
+            document.getElementById('app-approver-role').value = currentData.approval.approverRole;
+            document.getElementById('app-approver-name').value = currentData.approval.approverName;
+            document.getElementById('app-approver-date').value = currentData.approval.approverDate;
+
+            // Tasks & Standards
+            renderTaskEditor();
+            renderStandardEditor();
+        }
+
+        function renderListFields(containerId, items, category) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            items.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center space-x-2';
+                div.innerHTML = `
+                    <input type="text" value="${item}" onchange="updateListItem('${category}', ${index}, this.value)" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button onclick="removeListItem('${category}', ${index})" class="p-2.5 text-rose-500 hover:bg-rose-50 rounded-xl transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                `;
+                container.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        function renderTaskEditor() {
+            const container = document.getElementById('tasks-container');
+            container.innerHTML = '';
+            currentData.tasks.forEach((task, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-xs uppercase text-indigo-600">Tugas Utama #${index + 1}</span>
+                        <button onclick="removeTaskRow(${index})" class="text-rose-500 hover:bg-rose-50 p-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1"><i data-lucide="trash-2" class="w-4 h-4"></i><span>Hapus</span></button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Aktivitas</label>
+                            <input type="text" value="${task.aktivitas}" onchange="currentData.tasks[${index}].aktivitas = this.value" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Rincian Aktivitas</label>
+                            <textarea rows="2" onchange="currentData.tasks[${index}].rincian = this.value" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm">${task.rincian}</textarea>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        function renderStandardEditor() {
+            const container = document.getElementById('standards-container');
+            container.innerHTML = '';
+            currentData.standards.forEach((std, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-xs uppercase text-indigo-600">Indikator Kinerja #${index + 1}</span>
+                        <button onclick="removeStandardRow(${index})" class="text-rose-500 hover:bg-rose-50 p-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1"><i data-lucide="trash-2" class="w-4 h-4"></i><span>Hapus</span></button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Indikator Pekerjaan</label>
+                            <input type="text" value="${std.indikator}" onchange="currentData.standards[${index}].indikator = this.value" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Target Pekerjaan</label>
+                            <input type="text" value="${std.target}" onchange="currentData.standards[${index}].target = this.value" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        // Array Actions
+        function addListField(containerId, category) {
+            if(category === 'tanggungJawab') currentData.governance.tanggungJawab.push("Tanggung jawab baru...");
+            if(category === 'wewenang') currentData.governance.wewenang.push("Wewenang baru...");
+            if(category === 'lingkunganKerja') currentData.governance.lingkunganKerja.push("Lingkungan kerja baru...");
+            if(category === 'hardSkills') currentData.specification.hardSkills.push("Hard skill baru...");
+            if(category === 'softSkills') currentData.specification.softSkills.push("Soft skill baru...");
+            loadDataToUI();
+        }
+
+        function updateListItem(category, index, val) {
+            if(category === 'tanggungJawab') currentData.governance.tanggungJawab[index] = val;
+            if(category === 'wewenang') currentData.governance.wewenang[index] = val;
+            if(category === 'lingkunganKerja') currentData.governance.lingkunganKerja[index] = val;
+            if(category === 'hardSkills') currentData.specification.hardSkills[index] = val;
+            if(category === 'softSkills') currentData.specification.softSkills[index] = val;
+        }
+
+        function removeListItem(category, index) {
+            if(category === 'tanggungJawab') currentData.governance.tanggungJawab.splice(index, 1);
+            if(category === 'wewenang') currentData.governance.wewenang.splice(index, 1);
+            if(category === 'lingkunganKerja') currentData.governance.lingkunganKerja.splice(index, 1);
+            if(category === 'hardSkills') currentData.specification.hardSkills.splice(index, 1);
+            if(category === 'softSkills') currentData.specification.softSkills.splice(index, 1);
+            loadDataToUI();
+        }
+
+        function addTaskRow() {
+            currentData.tasks.push({ aktivitas: "Aktivitas baru...", rincian: "[1]. Rincian kegiatan..." });
+            renderTaskEditor();
+        }
+
+        function removeTaskRow(index) {
+            currentData.tasks.splice(index, 1);
+            renderTaskEditor();
+        }
+
+        function addStandardRow() {
+            currentData.standards.push({ indikator: "Indikator baru...", target: "Target baru..." });
+            renderStandardEditor();
+        }
+
+        function removeStandardRow(index) {
+            currentData.standards.splice(index, 1);
+            renderStandardEditor();
+        }
+
+        // Sync Form UI to App State
+        function syncUItoData() {
+            currentData.identity.nama = document.getElementById('form-nama').value;
+            currentData.identity.jabatan = document.getElementById('form-jabatan').value;
+            currentData.identity.departemen = document.getElementById('form-departemen').value;
+            currentData.identity.seksi = document.getElementById('form-seksi').value;
+            currentData.identity.atasanLangsung = document.getElementById('form-atasan').value;
+            currentData.identity.rekomendasiGrade = document.getElementById('form-grade').value;
+            currentData.identity.bawahan = document.getElementById('form-bawahan').value;
+            currentData.identity.koordInternal = document.getElementById('form-koord-internal').value;
+            currentData.identity.koordEksternal = document.getElementById('form-koord-eksternal').value;
+            currentData.identity.ringkasan = document.getElementById('form-ringkasan').value;
+
+            currentData.governance.tugasLain = document.getElementById('form-tugas-lain').value;
+
+            currentData.specification.pendidikan = document.getElementById('form-pendidikan').value;
+            currentData.specification.pengalaman = document.getElementById('form-pengalaman').value;
+            currentData.specification.sertifikasi = document.getElementById('form-sertifikasi').value;
+            currentData.specification.pelatihan = document.getElementById('form-pelatihan').value;
+
+            currentData.approval.makerRole = document.getElementById('app-maker-role').value;
+            currentData.approval.makerName = document.getElementById('app-maker-name').value;
+            currentData.approval.makerDate = document.getElementById('app-maker-date').value;
+            currentData.approval.checkerRole = document.getElementById('app-checker-role').value;
+            currentData.approval.checkerName = document.getElementById('app-checker-name').value;
+            currentData.approval.checkerDate = document.getElementById('app-checker-date').value;
+            currentData.approval.approverRole = document.getElementById('app-approver-role').value;
+            currentData.approval.approverName = document.getElementById('app-approver-name').value;
+            currentData.approval.approverDate = document.getElementById('app-approver-date').value;
+
+            updateOverviewStats();
+        }
+
+        // Save Data to LocalStorage & Show Toast
+        function saveData() {
+            syncUItoData();
+            localStorage.setItem('jobdesk_app_data', JSON.stringify(currentData));
+            showToast("Data Job Description berhasil disimpan!");
+        }
+
+        function resetData() {
+            if(confirm("Apakah Anda yakin ingin mereset data ke pengaturan awal?")) {
+                currentData = JSON.parse(JSON.stringify(defaultData));
+                localStorage.removeItem('jobdesk_app_data');
+                loadDataToUI();
+                updateOverviewStats();
+                showToast("Data telah di-reset ke default.");
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-[-200%]');
+            toast.classList.add('translate-y-0');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0');
+                toast.classList.add('translate-y-[-200%]');
+            }, 3000);
+        }
+
+        // Update Overview & Header Widgets
+        function updateOverviewStats() {
+            document.getElementById('header-title').innerText = currentData.identity.jabatan;
+            document.getElementById('header-dept-badge').innerText = currentData.identity.departemen;
+
+            document.getElementById('ov-jabatan').innerText = currentData.identity.jabatan;
+            document.getElementById('ov-ringkasan').innerText = currentData.identity.ringkasan;
+            document.getElementById('ov-grade').innerText = currentData.identity.rekomendasiGrade;
+
+            document.getElementById('stat-tasks').innerText = `${currentData.tasks.length} Aktivitas`;
+            document.getElementById('stat-standards').innerText = `${currentData.standards.length} Target`;
+            document.getElementById('stat-hard').innerText = `${currentData.specification.hardSkills.length} Keahlian`;
+            document.getElementById('stat-soft').innerText = `${currentData.specification.softSkills.length} Keahlian`;
+
+            document.getElementById('sum-nama').innerText = currentData.identity.nama;
+            document.getElementById('sum-dept').innerText = currentData.identity.departemen;
+            document.getElementById('sum-seksi').innerText = currentData.identity.seksi;
+            document.getElementById('sum-atasan').innerText = currentData.identity.atasanLangsung;
+            document.getElementById('sum-edu').innerText = currentData.specification.pendidikan;
+            document.getElementById('sum-exp').innerText = currentData.specification.pengalaman;
+            document.getElementById('sum-cert').innerText = currentData.specification.sertifikasi;
+            document.getElementById('sum-grade').innerText = currentData.identity.rekomendasiGrade;
+        }
+
+        // Render Printable Sheet View
+        function renderPrintView() {
+            document.getElementById('print-nama').innerText = currentData.identity.nama;
+            document.getElementById('print-jabatan').innerText = currentData.identity.jabatan;
+            document.getElementById('print-departemen').innerText = currentData.identity.departemen;
+            document.getElementById('print-seksi').innerText = currentData.identity.seksi;
+            document.getElementById('print-atasan').innerText = currentData.identity.atasanLangsung;
+            document.getElementById('print-bawahan').innerText = currentData.identity.bawahan;
+            document.getElementById('print-koord-internal').innerText = currentData.identity.koordInternal;
+            document.getElementById('print-koord-eksternal').innerText = currentData.identity.koordEksternal;
+            document.getElementById('print-grade').innerText = currentData.identity.rekomendasiGrade;
+            document.getElementById('print-ringkasan').innerText = currentData.identity.ringkasan;
+            document.getElementById('print-tugas-lain').innerText = currentData.governance.tugasLain;
+
+            // Tasks Table
+            const tasksTbody = document.getElementById('print-tasks-table');
+            tasksTbody.innerHTML = '';
+            currentData.tasks.forEach((t, i) => {
+                tasksTbody.innerHTML += `
+                    <tr>
+                        <td class="border border-slate-300 p-2 text-center align-top font-semibold">${i+1}</td>
+                        <td class="border border-slate-300 p-2 align-top font-medium">${t.aktivitas}</td>
+                        <td class="border border-slate-300 p-2 align-top whitespace-pre-line text-slate-700">${t.rincian}</td>
+                    </tr>
+                `;
+            });
+
+            // Lists
+            fillList('print-tanggung-jawab-list', currentData.governance.tanggungJawab);
+            fillList('print-wewenang-list', currentData.governance.wewenang);
+            fillList('print-lingkungan-list', currentData.governance.lingkunganKerja);
+            fillList('print-hard-skills', currentData.specification.hardSkills);
+            fillList('print-soft-skills', currentData.specification.softSkills);
+
+            document.getElementById('print-pendidikan').innerText = currentData.specification.pendidikan;
+            document.getElementById('print-pengalaman').innerText = currentData.specification.pengalaman;
+            document.getElementById('print-sertifikasi-pelatihan').innerText = `${currentData.specification.sertifikasi} | ${currentData.specification.pelatihan}`;
+
+            // Standards Table
+            const stdTbody = document.getElementById('print-standards-table');
+            stdTbody.innerHTML = '';
+            currentData.standards.forEach((s, i) => {
+                stdTbody.innerHTML += `
+                    <tr>
+                        <td class="border border-slate-300 p-2 text-center align-top font-semibold">${i+1}</td>
+                        <td class="border border-slate-300 p-2 align-top font-medium">${s.indikator}</td>
+                        <td class="border border-slate-300 p-2 align-top text-indigo-700 font-semibold">${s.target}</td>
+                    </tr>
+                `;
+            });
+
+            // Approval Signatures
+            document.getElementById('prn-maker-title').innerHTML = `Dibuat oleh,<br>${currentData.approval.makerRole}`;
+            document.getElementById('prn-maker-name').innerText = currentData.approval.makerName;
+            document.getElementById('prn-maker-date').innerText = `Tanggal: ${currentData.approval.makerDate}`;
+
+            document.getElementById('prn-checker-title').innerHTML = `Diperiksa oleh,<br>${currentData.approval.checkerRole}`;
+            document.getElementById('prn-checker-name').innerText = currentData.approval.checkerName;
+            document.getElementById('prn-checker-date').innerText = `Tanggal: ${currentData.approval.checkerDate}`;
+
+            document.getElementById('prn-approver-title').innerHTML = `Disetujui oleh,<br>${currentData.approval.approverRole}`;
+            document.getElementById('prn-approver-name').innerText = currentData.approval.approverName;
+            document.getElementById('prn-approver-date').innerText = `Tanggal: ${currentData.approval.approverDate}`;
+        }
+
+        function fillList(elementId, items) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = '';
+            items.forEach(item => {
+                el.innerHTML += `<li>${item}</li>`;
+            });
+        }
+    </script>
+</body>
+</html>

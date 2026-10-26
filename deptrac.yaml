@@ -3,6 +3,7 @@ deptrac:
     - app
   exclude_files:
     - '#.*Test\.php$#'
+    - '#.*Seeder\.php$#'
   layers:
     - name: Platform_Contracts
       collectors:

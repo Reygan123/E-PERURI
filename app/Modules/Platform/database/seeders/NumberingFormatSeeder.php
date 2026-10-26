@@ -4,7 +4,6 @@ namespace App\Modules\Platform\Database\Seeders;
 
 use App\Modules\Platform\Models\NumberingFormat;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class NumberingFormatSeeder extends Seeder
 {
@@ -142,7 +141,6 @@ class NumberingFormatSeeder extends Seeder
             NumberingFormat::updateOrCreate(
                 ['code' => $f['code']],
                 [
-                    'id' => (string) Str::uuid(),
                     'module' => $f['module'],
                     'template' => $f['template'],
                     'reset_period' => $f['reset_period'],

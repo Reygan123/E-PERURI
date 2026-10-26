@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Modules\Platform\Contracts\UserResolverInterface;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -30,10 +31,20 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+        $canAccessPlatform = false;
+
+        if ($user) {
+            /** @var UserResolverInterface $resolver */
+            $resolver = app(UserResolverInterface::class);
+            $canAccessPlatform = $resolver->hasRole('super-admin', $user) || $resolver->hasRole('admin-sdm', $user);
+        }
+
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
+                'can_access_platform' => $canAccessPlatform,
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

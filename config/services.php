@@ -31,4 +31,14 @@ return [
         ],
     ],
 
+    'whatsapp' => [
+        'driver' => env('WHATSAPP_DRIVER', 'log'),
+        'api_url' => env('WHATSAPP_API_URL', 'https://api.fonnte.com/send'),
+        'api_token' => env('WHATSAPP_API_TOKEN', ''),
+        'qontak_token' => env('QONTAK_API_TOKEN', ''),
+        'qontak_channel_id' => env('QONTAK_CHANNEL_ID', ''),
+        'wablas_url' => env('WABLAS_API_URL', 'https://kudus.wablas.com/api/send-message'),
+        'wablas_token' => env('WABLAS_API_TOKEN', ''),
+    ],
+
 ];

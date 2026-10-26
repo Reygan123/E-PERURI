@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Modules\Arsip\Database\Seeders\ArsipDummySeeder;
 use App\Modules\Arsip\Database\Seeders\LetterTypeSeeder;
 use App\Modules\Platform\Database\Seeders\DevelopmentUserSeeder;
 use App\Modules\Platform\Database\Seeders\NumberingFormatSeeder;
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             DevelopmentUserSeeder::class,
             NumberingFormatSeeder::class,
             LetterTypeSeeder::class,
+            ArsipDummySeeder::class,
         ]);
     }
 }

@@ -30,6 +30,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $draft_file_id
  * @property string|null $signed_file_id
  * @property bool $is_double_upload_complete
+ * @property string|null $signature_hash
+ * @property Carbon|null $signed_at
+ * @property string|null $signer_employee_id
+ * @property array<string, mixed>|null $signature_metadata
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -66,6 +70,10 @@ class Letter extends Model
         'draft_file_id',
         'signed_file_id',
         'is_double_upload_complete',
+        'signature_hash',
+        'signed_at',
+        'signer_employee_id',
+        'signature_metadata',
     ];
 
     /**
@@ -75,6 +83,8 @@ class Letter extends Model
         'letter_date' => 'date',
         'content_body' => 'array',
         'is_double_upload_complete' => 'boolean',
+        'signed_at' => 'datetime',
+        'signature_metadata' => 'array',
     ];
 
     /**

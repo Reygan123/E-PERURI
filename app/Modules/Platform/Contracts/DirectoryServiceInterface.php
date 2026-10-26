@@ -43,4 +43,11 @@ interface DirectoryServiceInterface
      * @return list<array<string, mixed>>
      */
     public function getAllOrgUnits(): array;
+
+    /**
+     * Get the designated leader or highest ranking employee of an organizational unit.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getLeaderEmployeeOfUnit(string $idOrCode): ?array;
 }

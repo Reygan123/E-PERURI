@@ -15,6 +15,7 @@ use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -151,6 +152,8 @@ class SuratKeluarController extends Controller
      */
     public function show(Letter $letter): Response
     {
+        Gate::authorize('view', $letter);
+
         $letter->load([
             'type',
             'destinations',
@@ -173,6 +176,8 @@ class SuratKeluarController extends Controller
      */
     public function submit(Letter $letter): RedirectResponse
     {
+        Gate::authorize('submit', $letter);
+
         $employeeId = $this->userResolver->getCurrentEmployeeId();
         if (! $employeeId) {
             return back()->with('error', 'Akun pengguna belum tertaut data pegawai.');
@@ -192,6 +197,8 @@ class SuratKeluarController extends Controller
      */
     public function uploadSigned(Request $request, Letter $letter): RedirectResponse
     {
+        Gate::authorize('uploadSigned', $letter);
+
         $request->validate([
             'signed_file' => ['required', 'file', 'mimes:pdf', 'max:15360'],
         ], [
@@ -214,6 +221,80 @@ class SuratKeluarController extends Controller
             return back()->with('success', 'Berkas scan basah final berhasil diunggah. Surat telah berstatus resmi.');
         } catch (DomainException $e) {
             return back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Show form for editing / revising Surat Keluar.
+     */
+    public function edit(Letter $letter): Response
+    {
+        Gate::authorize('update', $letter);
+
+        $letter->load([
+            'type',
+            'destinations',
+            'approvals' => fn ($q) => $q->orderBy('step_order'),
+        ]);
+
+        $type = LetterType::where('code', 'A')->firstOrFail();
+        $orgUnits = $this->directoryService->getAllOrgUnits();
+
+        $latestRevision = $letter->approvals
+            ->where('status', 'revision_requested')
+            ->last();
+
+        return Inertia::render('Arsip/SuratKeluar/Edit', [
+            'letter' => $letter,
+            'type' => $type,
+            'orgUnits' => $orgUnits,
+            'revisionNote' => $latestRevision?->notes,
+        ]);
+    }
+
+    /**
+     * Update and optionally resubmit Surat Keluar.
+     */
+    public function update(StoreSuratKeluarRequest $request, Letter $letter): RedirectResponse
+    {
+        Gate::authorize('update', $letter);
+
+        $employeeId = $this->userResolver->getCurrentEmployeeId();
+        if (! $employeeId) {
+            return back()->with('error', 'Akun pengguna belum tertaut data pegawai.');
+        }
+
+        $validated = $request->validated();
+        $type = LetterType::where('code', 'A')->firstOrFail();
+        $validated['type_id'] = $type->id;
+
+        /** @var UploadedFile|null $draftFile */
+        $draftFile = $request->file('draft_file');
+
+        /** @var list<UploadedFile> $attachments */
+        $attachments = $request->file('attachments', []);
+
+        /** @var list<string> $destinationUnitIds */
+        $destinationUnitIds = $validated['destination_unit_ids'] ?? [];
+
+        try {
+            $updatedLetter = $this->letterService->updateDraft(
+                letter: $letter,
+                data: $validated,
+                actorEmployeeId: $employeeId,
+                draftFile: $draftFile,
+                destinationUnitIds: $destinationUnitIds,
+                additionalAttachments: $attachments
+            );
+
+            if ($request->boolean('submit_now')) {
+                $this->letterService->submitForApproval($updatedLetter, $employeeId);
+            }
+
+            return redirect()->route('arsip.surat-keluar.show', $letter->id)
+                ->with('success', 'Surat Keluar berhasil diperbaiki dan diajukan ulang ke alur persetujuan.');
+        } catch (DomainException $e) {
+            return back()->with('error', $e->getMessage())->withInput();
         }
     }
 }

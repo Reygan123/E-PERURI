@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Platform\database\seeders;
 
 use App\Modules\Platform\Models\OrgUnit;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class OrgUnitSeeder extends Seeder
 {
@@ -17,7 +18,6 @@ class OrgUnitSeeder extends Seeder
         $dirUtm = OrgUnit::updateOrCreate(
             ['code' => 'DIR-UTM'],
             [
-                'id' => (string) Str::uuid(),
                 'parent_id' => null,
                 'name' => 'Direktorat Utama',
                 'type' => 'directorate',
@@ -59,7 +59,6 @@ class OrgUnitSeeder extends Seeder
             $level1Models[$u['code']] = OrgUnit::updateOrCreate(
                 ['code' => $u['code']],
                 [
-                    'id' => (string) Str::uuid(),
                     'parent_id' => $dirUtm->id,
                     'name' => $u['name'],
                     'type' => $u['type'],
@@ -82,7 +81,6 @@ class OrgUnitSeeder extends Seeder
             $level2Models[$d['code']] = OrgUnit::updateOrCreate(
                 ['code' => $d['code']],
                 [
-                    'id' => (string) Str::uuid(),
                     'parent_id' => $level1Models['DIR-OPS']->id,
                     'name' => $d['name'],
                     'type' => 'department',
@@ -106,7 +104,6 @@ class OrgUnitSeeder extends Seeder
             $level2Models[$d['code']] = OrgUnit::updateOrCreate(
                 ['code' => $d['code']],
                 [
-                    'id' => (string) Str::uuid(),
                     'parent_id' => $level1Models['DIR-KEU']->id,
                     'name' => $d['name'],
                     'type' => $d['type'],
@@ -163,7 +160,6 @@ class OrgUnitSeeder extends Seeder
             OrgUnit::updateOrCreate(
                 ['code' => $s['code']],
                 [
-                    'id' => (string) Str::uuid(),
                     'parent_id' => $level2Models[$s['parent']]->id,
                     'name' => $s['name'],
                     'type' => 'section',

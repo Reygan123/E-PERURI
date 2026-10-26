@@ -4,7 +4,6 @@ namespace App\Modules\Arsip\Database\Seeders;
 
 use App\Modules\Arsip\Models\LetterType;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class LetterTypeSeeder extends Seeder
 {
@@ -193,7 +192,6 @@ class LetterTypeSeeder extends Seeder
             LetterType::updateOrCreate(
                 ['code' => $t['code']],
                 [
-                    'id' => (string) Str::uuid(),
                     'name' => $t['name'],
                     'numbering_format_code' => $t['format_code'],
                     'signature_type' => $t['signature_type'],

@@ -25,7 +25,8 @@ class LetterService
         protected DirectoryServiceInterface $directoryService,
         protected FilesServiceInterface $filesService,
         protected AuditServiceInterface $auditService,
-        protected ApprovalWorkflowService $workflowService
+        protected ApprovalWorkflowService $workflowService,
+        protected LetterPdfService $letterPdfService
     ) {}
 
     /**
@@ -59,7 +60,7 @@ class LetterService
                 }
             }
 
-            // 1. Upload initial draft file if provided
+            // 1. Upload initial draft file if manually provided
             $draftFileId = null;
             if ($draftFile) {
                 $fileMetadata = $this->filesService->store($draftFile, 'arsip', 'draft_letter', $creatorEmployeeId);
@@ -84,6 +85,12 @@ class LetterService
                 'draft_file_id' => $draftFileId,
                 'is_double_upload_complete' => ! $type->requires_double_upload,
             ]);
+
+            // Auto-generate digital draft PDF if no manual file provided (except Surat Masuk)
+            if (! $draftFileId && $type->code !== 'B') {
+                $pdfMeta = $this->letterPdfService->generateAndStoreDraftPdf($letter, $creatorEmployeeId);
+                $letter->update(['draft_file_id' => $pdfMeta['id']]);
+            }
 
             // 3. Create destinations
             foreach ($destinationUnitIds as $targetUnitId) {
@@ -118,6 +125,95 @@ class LetterService
                     'status' => $letter->status,
                 ],
                 notes: 'Pembuatan draf surat baru'
+            );
+
+            return $letter->load(['type', 'destinations', 'attachments']);
+        });
+    }
+
+    /**
+     * Update an existing draft or revision-requested letter.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  list<string>  $destinationUnitIds
+     * @param  list<UploadedFile>  $additionalAttachments
+     */
+    public function updateDraft(
+        Letter $letter,
+        array $data,
+        string $actorEmployeeId,
+        ?UploadedFile $draftFile = null,
+        array $destinationUnitIds = [],
+        array $additionalAttachments = []
+    ): Letter {
+        return DB::transaction(function () use ($letter, $data, $actorEmployeeId, $draftFile, $destinationUnitIds, $additionalAttachments) {
+            if ($letter->creator_employee_id !== $actorEmployeeId) {
+                throw new DomainException('Hanya pembuat naskah dinas yang berwenang mengubah dokumen ini.');
+            }
+
+            if (! in_array($letter->status, ['draft', 'revision_requested'], true)) {
+                throw new DomainException('Dokumen ini sedang diproses atau telah disetujui, dan tidak dapat diubah lagi.');
+            }
+
+            // 1. Upload new draft file if provided
+            if ($draftFile) {
+                $fileMetadata = $this->filesService->store($draftFile, 'arsip', 'draft_letter', $actorEmployeeId);
+                $letter->draft_file_id = $fileMetadata['id'];
+            }
+
+            // 2. Update basic fields
+            $letter->subject = $data['subject'] ?? $letter->subject;
+            $letter->letter_date = $data['letter_date'] ?? $letter->letter_date;
+            $letter->confidentiality = $data['confidentiality'] ?? $letter->confidentiality;
+            $letter->urgency = $data['urgency'] ?? $letter->urgency;
+            if (isset($data['content_body'])) {
+                $letter->content_body = $data['content_body'];
+            }
+            if (isset($data['destination_text'])) {
+                $letter->destination_text = $data['destination_text'];
+            }
+            $letter->save();
+
+            // 3. Update destinations if provided
+            if (! empty($destinationUnitIds)) {
+                LetterDestination::where('letter_id', $letter->id)->delete();
+                foreach ($destinationUnitIds as $targetUnitId) {
+                    LetterDestination::create([
+                        'id' => (string) Str::uuid(),
+                        'letter_id' => $letter->id,
+                        'org_unit_id' => $targetUnitId,
+                    ]);
+                }
+            }
+
+            // 4. Regenerate PDF draft if digital document
+            $letter->loadMissing('type');
+            if (! $draftFile && $letter->type->code !== 'B') {
+                $pdfMeta = $this->letterPdfService->generateAndStoreDraftPdf($letter, $actorEmployeeId);
+                $letter->update(['draft_file_id' => $pdfMeta['id']]);
+            }
+
+            // 5. Store additional attachments
+            foreach ($additionalAttachments as $attachment) {
+                $attMeta = $this->filesService->store($attachment, 'arsip', 'letter_attachment', $actorEmployeeId);
+                LetterAttachment::create([
+                    'id' => (string) Str::uuid(),
+                    'letter_id' => $letter->id,
+                    'file_id' => $attMeta['id'],
+                    'title' => $attachment->getClientOriginalName(),
+                ]);
+            }
+
+            $this->auditService->log(
+                module: 'arsip',
+                action: 'UPDATE_DRAFT',
+                auditableType: 'Letter',
+                auditableId: (string) $letter->id,
+                newValues: [
+                    'subject' => $letter->subject,
+                    'status' => $letter->status,
+                ],
+                notes: 'Pembaruan isi draf surat oleh pembuat'
             );
 
             return $letter->load(['type', 'destinations', 'attachments']);
@@ -235,6 +331,28 @@ class LetterService
                     'status' => 'signed',
                 ],
                 notes: 'Pengunggahan berkas scan basah final'
+            );
+
+            return $letter->fresh();
+        });
+    }
+
+    /**
+     * Regenerate draft PDF (e.g. after updating content_body or for preview).
+     */
+    public function regenerateDraftPdf(Letter $letter): Letter
+    {
+        return DB::transaction(function () use ($letter) {
+            $pdfMeta = $this->letterPdfService->generateAndStoreDraftPdf($letter);
+            $letter->update(['draft_file_id' => $pdfMeta['id']]);
+
+            $this->auditService->log(
+                module: 'arsip',
+                action: 'REGENERATE_DRAFT_PDF',
+                auditableType: 'Letter',
+                auditableId: (string) $letter->id,
+                newValues: ['draft_file_id' => $pdfMeta['id']],
+                notes: 'Pembaruan otomatis dokumen PDF draf surat'
             );
 
             return $letter->fresh();

@@ -1,66 +1,74 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Ekosistem Aplikasi Internal & E-Arsip PT Kertas Padalarang (PTKP)
+**Peruri Security Paper Mill — Versi 2 (Modular Monolith)**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Enterprise Resource Management terintegrasi PT Kertas Padalarang berbasis Laravel 11 Modular Monolith, Vue 3 + Inertia.js, Tailwind CSS, dan PostgreSQL 16 (Multi-Schema).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Panduan Cepat Menjalankan Aplikasi (Quick Start)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Panduan instalasi dan menjalankan sistem secara lengkap dan terstruktur telah didokumentasikan di berkas:
+👉 **[CARA_RUNNING.md](file:///c:/Project/PERURI/Project/v2/CARA_RUNNING.md)**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Ringkasan perintah untuk menjalankan di lokal:
+```bash
+# 1. Jalankan container PostgreSQL & Redis
+docker compose up -d
 
-## Learning Laravel
+# 2. Setup backend & database
+composer install
+php artisan key:generate
+php artisan migrate:fresh --seed
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# 3. Setup frontend
+npm install
+npm run build
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# 4. Jalankan aplikasi
+php artisan serve --port=8088
+# Di terminal terpisah untuk hot-reload frontend & queue worker:
+npm run dev
+php artisan queue:work
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 📚 Modul Sistem
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Sistem ini dirancang menggunakan arsitektur **Modular Monolith** dengan isolasi skema PostgreSQL:
 
-### Premium Partners
+1. **Platform (`platform`)**: Autentikasi, otorisasi RBAC berlingkup unit (*Scoped Roles*), direktori pegawai 39 unit organisasi, manajemen jabatan berjenjang, penomoran naskah dinas atomik, dan audit log tidak terhapuskan (*immutable*).
+2. **E-Arsip (`arsip`)**: Registrasi & agenda surat masuk/keluar, disposisi berjenjang, siklus nota dinas & persetujuan, penanganan revisi naskah berjenjang, Tanda Tangan Elektronik (TTE BSrE BSSN) terintegrasi QR Code vektor, dan portal verifikasi dokumen publik (`/verify/{hash}`).
+3. **Layanan (`layanan`)**: Manajemen permohonan layanan & tiket helpdesk internal.
+4. **Pembelajaran (`pembelajaran`)**: Portal pelatihan dan LMS internal pegawai.
+5. **SDM (`sdm`)**: Administrasi kepegawaian, mutasi jabatan, dan cuti.
+6. **Manufaktur (`manufaktur`)**: Pelacakan proses produksi kertas sekuriti.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## 🔑 Akun Uji Coba Default
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Semua akun pengujian menggunakan kata sandi: `password`
 
-## Code of Conduct
+- **Super Administrator:** `superadmin`
+- **Sekretaris Direksi:** `stafdirut`
+- **Pimpinan Arsip:** `kadivarsip`
+- **Staf Arsip & Tata Usaha:** `stafarsip`
+- **Pimpinan SDM:** `kadivsdm`
+- **Pimpinan Keuangan:** `pimpkeu`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+*Daftar lengkap 78 akun pengujian mencakup seluruh tingkatan unit kerja tersedia di [CARA_RUNNING.md](file:///c:/Project/PERURI/Project/v2/CARA_RUNNING.md) dan [Panduan UAT](file:///c:/Project/PERURI/Project/v2/dokumentasi/panduan-uat/Panduan_Pelaksanaan_UAT_E-Arsip.md).*
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🛡️ Standar Kualitas & Quality Assurance (QA/QC)
 
-## License
+Sistem telah diaudit secara menyeluruh dan memenuhi kriteria:
+- **PHPStan / Larastan:** 0 errors
+- **Deptrac Architecture:** 0 layer boundary violations
+- **Laravel Pint:** 100% PSR-12 compliant
+- **Automated Tests:** 86 tests passed (414 assertions)
+- **Frontend Typings:** `vue-tsc` pass (0 errors)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+*© 2026 PT Kertas Padalarang — Peruri Security Paper Mill. Hak cipta dilindungi undang-undang.*

@@ -5,6 +5,7 @@ namespace App\Modules\Platform\Services;
 use App\Modules\Platform\Contracts\DirectoryServiceInterface;
 use App\Modules\Platform\Models\Employee;
 use App\Modules\Platform\Models\OrgUnit;
+use Illuminate\Support\Str;
 
 class DirectoryService implements DirectoryServiceInterface
 {
@@ -155,5 +156,43 @@ class DirectoryService implements DirectoryServiceInterface
             ->toArray();
 
         return $units;
+    }
+
+    /**
+     * Get the designated leader or highest ranking employee of an organizational unit.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getLeaderEmployeeOfUnit(string $idOrCode): ?array
+    {
+        $unitQuery = OrgUnit::query();
+        if (Str::isUuid($idOrCode)) {
+            $unitQuery->where('id', $idOrCode);
+        } else {
+            $unitQuery->where('code', $idOrCode);
+        }
+
+        $unit = $unitQuery->first();
+
+        if (! $unit || ! $unit->is_active) {
+            return null;
+        }
+
+        $employee = Employee::where('is_active', true)
+            ->whereHas('activeAssignment', function ($q) use ($unit) {
+                $q->where('org_unit_id', $unit->id);
+            })
+            ->with(['activeAssignment.position', 'activeAssignment.orgUnit'])
+            ->get()
+            ->sortBy(function ($emp) {
+                return $emp->activeAssignment?->position->level ?? 99;
+            })
+            ->first();
+
+        if (! $employee) {
+            return null;
+        }
+
+        return $this->getEmployeeById($employee->id);
     }
 }

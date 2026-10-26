@@ -21,6 +21,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -164,6 +165,8 @@ class SuratMasukController extends Controller
      */
     public function show(Letter $letter): Response
     {
+        Gate::authorize('view', $letter);
+
         $letter->load([
             'type',
             'attachments',
