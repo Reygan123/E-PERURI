@@ -24,6 +24,7 @@ const isArsipWorkspace = computed(() => currentUrl.value.startsWith('/arsip'));
 const isPlatformWorkspace = computed(() =>
     currentUrl.value.startsWith('/platform'),
 );
+const isSdmWorkspace = computed(() => currentUrl.value.startsWith('/sdm'));
 
 const canAccessPlatform = computed(() =>
     Boolean((page.props.auth as any)?.can_access_platform),
@@ -146,7 +147,7 @@ const handleNavClick = () => {
             <template
                 v-if="
                     isArsipWorkspace ||
-                    (!isPlatformWorkspace && !isArsipWorkspace)
+                    (!isPlatformWorkspace && !isArsipWorkspace && !isSdmWorkspace)
                 "
             >
                 <!-- App Title Badge -->
@@ -478,12 +479,19 @@ const handleNavClick = () => {
                     </AppNavItem>
                 </div>
 
-                <!-- Switch to Platform Admin (Only if Admin) -->
-                <div
-                    v-if="canAccessPlatform"
-                    class="mt-auto border-t border-white/10 pt-2"
-                >
+                <!-- Switchers to Jobdesk & Platform Core -->
+                <div class="mt-auto border-t border-white/10 pt-2 flex flex-col gap-1.5">
                     <Link
+                        href="/sdm/jobdesk"
+                        class="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 font-body text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                        @click="handleNavClick"
+                    >
+                        <span>Direktori Jobdesk (SDM)</span>
+                        <span>&rarr;</span>
+                    </Link>
+
+                    <Link
+                        v-if="canAccessPlatform"
                         href="/platform/org-units"
                         class="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 font-body text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                         @click="handleNavClick"
@@ -664,14 +672,120 @@ const handleNavClick = () => {
                     </AppNavItem>
                 </div>
 
-                <!-- Switch to E-Arsip -->
-                <div class="mt-auto border-t border-white/10 pt-2">
+                <!-- Switchers to E-Arsip & Jobdesk -->
+                <div class="mt-auto border-t border-white/10 pt-2 flex flex-col gap-1.5">
+                    <Link
+                        href="/sdm/jobdesk"
+                        class="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 font-body text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                        @click="handleNavClick"
+                    >
+                        <span>Direktori Jobdesk (SDM)</span>
+                        <span>&rarr;</span>
+                    </Link>
+
                     <Link
                         href="/arsip/surat-masuk"
                         class="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 font-body text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                         @click="handleNavClick"
                     >
                         <span>Beralih ke E-Arsip</span>
+                        <span>&rarr;</span>
+                    </Link>
+                </div>
+            </template>
+
+            <!-- ========================================== -->
+            <!-- WORKSPACE 3: SDM & DIGITAL JOBDESK         -->
+            <!-- ========================================== -->
+            <template v-else-if="isSdmWorkspace">
+                <!-- App Title Badge -->
+                <div
+                    class="flex items-center justify-between rounded-md border border-white/10 bg-white/5 px-2 py-1.5"
+                >
+                    <div class="flex items-center gap-2">
+                        <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                        <span
+                            class="font-heading text-xs font-bold tracking-wider text-white"
+                            >SDM & ORGANISASI</span
+                        >
+                    </div>
+                    <AppBadge variant="violet" size="sm">Jobdesk</AppBadge>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <span
+                        class="px-2.5 pb-1 font-heading text-[11px] font-bold tracking-wider text-white/50"
+                    >
+                        PROFIL & URAIAN JABATAN
+                    </span>
+
+                    <AppNavItem
+                        href="/sdm/jobdesk"
+                        :active="isItemActive('/sdm/jobdesk') && currentUrl !== '/sdm/jobdesk/create'"
+                        @click="handleNavClick"
+                    >
+                        <template #icon>
+                            <svg
+                                class="h-4 w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.8"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z"
+                                />
+                            </svg>
+                        </template>
+                        Katalog Jobdesk
+                    </AppNavItem>
+
+                    <AppNavItem
+                        href="/sdm/jobdesk/create"
+                        :active="isItemActive('/sdm/jobdesk/create')"
+                        @click="handleNavClick"
+                    >
+                        <template #icon>
+                            <svg
+                                class="h-4 w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.8"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 4.5v15m7.5-7.5h-15"
+                                />
+                            </svg>
+                        </template>
+                        Susun Jobdesk Baru
+                    </AppNavItem>
+                </div>
+
+                <!-- Switchers to other workspaces -->
+                <div class="mt-auto border-t border-white/10 pt-2 flex flex-col gap-1.5">
+                    <Link
+                        href="/arsip/surat-masuk"
+                        class="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 font-body text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                        @click="handleNavClick"
+                    >
+                        <span>Beralih ke E-Arsip</span>
+                        <span>&rarr;</span>
+                    </Link>
+
+                    <Link
+                        v-if="canAccessPlatform"
+                        href="/platform/org-units"
+                        class="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 font-body text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                        @click="handleNavClick"
+                    >
+                        <span>Beralih ke Platform Inti</span>
                         <span>&rarr;</span>
                     </Link>
                 </div>
