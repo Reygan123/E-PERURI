@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import NotificationDropdown from '@/Components/NotificationDropdown.vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
@@ -105,7 +106,10 @@ const logout = () => {
             </div>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Notification Center -->
+            <NotificationDropdown />
+
             <!-- User Menu -->
             <div class="relative">
                 <button

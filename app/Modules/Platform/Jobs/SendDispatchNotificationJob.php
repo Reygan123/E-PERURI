@@ -65,6 +65,9 @@ class SendDispatchNotificationJob implements ShouldQueue
             'payload' => json_encode([
                 'title' => $this->title,
                 'message' => $this->message,
+                'module' => $this->metadata['module'] ?? 'platform',
+                'action_url' => $this->metadata['action_url'] ?? null,
+                'icon' => $this->metadata['icon'] ?? null,
                 'metadata' => $this->metadata,
             ]),
             'read_at' => null,

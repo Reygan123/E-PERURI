@@ -126,7 +126,7 @@ test('user can create a new job description draft with dynamic sub-details', fun
     $response = $this->actingAs($user)->post('/sdm/jobdesk', $payload);
     $response->assertRedirect();
 
-    $newJob = JobDescription::where('position_id', $position->id)->latest('created_at')->first();
+    $newJob = JobDescription::where('job_summary', $payload['job_summary'])->first();
     expect($newJob)->not->toBeNull();
     expect($newJob->status)->toBe('draft');
     expect($newJob->tasks()->count())->toBe(2);

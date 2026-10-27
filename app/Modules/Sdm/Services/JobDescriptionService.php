@@ -317,7 +317,7 @@ class JobDescriptionService
      */
     public function submitForApproval(JobDescription $job, User $submitter): JobDescription
     {
-        return DB::transaction(function () use ($job) {
+        return DB::transaction(function () use ($job, $submitter) {
             $job->update(['status' => 'in_review']);
 
             // Create checker stage (Kepala Seksi / Verifikator)
@@ -339,6 +339,32 @@ class JobDescriptionService
                 auditableId: $job->id,
                 notes: 'Diajukan untuk pemeriksaan verifikator seksi'
             );
+
+            // Notify approvers / pimpinan
+            $pos = DB::table('platform.positions')->where('id', $job->position_id)->value('name') ?? 'Jabatan';
+            $approverUserIds = DB::table('platform.users')
+                ->join('platform.user_roles', 'platform.users.id', '=', 'platform.user_roles.user_id')
+                ->join('platform.roles', 'platform.user_roles.role_id', '=', 'platform.roles.id')
+                ->whereIn('platform.roles.name', ['super-admin', 'pimpinan', 'admin-sdm'])
+                ->pluck('platform.users.id')
+                ->unique()
+                ->all();
+
+            if (! empty($approverUserIds)) {
+                $this->notifications->send(
+                    recipientEmployeeIds: $approverUserIds,
+                    title: "Draf Jobdesk Diajukan: {$pos}",
+                    message: "Draf uraian jabatan [{$pos}] diajukan oleh {$submitter->name} dan membutuhkan verifikasi/pengesahan pimpinan.",
+                    channels: ['database'],
+                    metadata: [
+                        'module' => 'sdm',
+                        'action_url' => "/sdm/jobdesk/{$job->id}",
+                        'icon' => 'file-text',
+                        'reference_id' => $job->id,
+                        'type' => 'job_description_review',
+                    ]
+                );
+            }
 
             return $job;
         });
@@ -366,6 +392,8 @@ class JobDescriptionService
                 ]);
             }
 
+            $pos = DB::table('platform.positions')->where('id', $job->position_id)->value('name') ?? 'Jabatan';
+
             if ($decision === 'rejected') {
                 $job->update(['status' => 'draft']);
 
@@ -377,22 +405,33 @@ class JobDescriptionService
                     notes: "Ditolak pada tahap {$stage}: {$notes}"
                 );
 
+                if ($job->created_by) {
+                    $this->notifications->send(
+                        recipientEmployeeIds: [$job->created_by],
+                        title: "Revisi Draf Jobdesk: {$pos}",
+                        message: "Draf uraian jabatan [{$pos}] dikembalikan untuk revisi oleh {$approver->name}: {$notes}",
+                        channels: ['database'],
+                        metadata: [
+                            'module' => 'sdm',
+                            'action_url' => "/sdm/jobdesk/{$job->id}",
+                            'icon' => 'alert-triangle',
+                            'reference_id' => $job->id,
+                            'type' => 'job_description_rejected',
+                        ]
+                    );
+                }
+
                 return $job;
             }
 
-            // If approved, advance to next stage or finalize
-            if ($stage === 'checker') {
-                // Advance to approver (Kepala Departemen)
-                JobApproval::create([
-                    'job_description_id' => $job->id,
-                    'stage' => 'approver',
-                    'role_title' => 'Penyetuju / Kepala Departemen',
-                    'approver_user_id' => null,
-                    'approver_name' => 'Kepala Departemen Terkait',
-                    'decision' => 'pending',
-                    'notes' => null,
-                ]);
-            } elseif ($stage === 'approver' || $stage === 'sdm_kadep') {
+            // If approved, finalize if user is authorized approver (pimpinan / kadep / super-admin) or final stage
+            $isPimpinan = DB::table('platform.user_roles')
+                ->join('platform.roles', 'platform.user_roles.role_id', '=', 'platform.roles.id')
+                ->where('platform.user_roles.user_id', $approver->id)
+                ->whereIn('platform.roles.name', ['pimpinan', 'super-admin', 'admin-sdm'])
+                ->exists();
+
+            if ($isPimpinan || in_array($stage, ['approver', 'sdm_kadep'], true)) {
                 // Finalize approval: generate official document number & TTE digital digest
                 $unit = $this->directory->getOrgUnit($job->org_unit_id);
                 $unitCode = is_array($unit) ? ($unit['code'] ?? 'SDM') : 'SDM';
@@ -409,6 +448,33 @@ class JobDescriptionService
                     'document_number' => $docNumber,
                     'tte_hash' => $tteHash,
                     'tte_signed_at' => now(),
+                ]);
+
+                if ($job->created_by) {
+                    $this->notifications->send(
+                        recipientEmployeeIds: [$job->created_by],
+                        title: "Jobdesk Resmi Disahkan: {$pos}",
+                        message: "Dokumen uraian jabatan [{$pos}] telah disahkan resmi dengan Nomor Dokumen {$docNumber} dan TTE BSrE.",
+                        channels: ['database'],
+                        metadata: [
+                            'module' => 'sdm',
+                            'action_url' => "/sdm/jobdesk/{$job->id}",
+                            'icon' => 'check-circle',
+                            'reference_id' => $job->id,
+                            'type' => 'job_description_approved',
+                        ]
+                    );
+                }
+            } else {
+                // Advance to approver (Kepala Departemen)
+                JobApproval::create([
+                    'job_description_id' => $job->id,
+                    'stage' => 'approver',
+                    'role_title' => 'Penyetuju / Kepala Departemen',
+                    'approver_user_id' => null,
+                    'approver_name' => 'Kepala Departemen Terkait',
+                    'decision' => 'pending',
+                    'notes' => null,
                 ]);
             }
 

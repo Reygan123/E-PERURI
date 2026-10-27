@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Arsip\Providers\ArsipServiceProvider;
+use App\Modules\Layanan\Providers\LayananServiceProvider;
 use App\Modules\Platform\Providers\PlatformServiceProvider;
 use App\Modules\Sdm\Providers\SdmServiceProvider;
 use App\Providers\AppServiceProvider;
@@ -10,4 +11,5 @@ return [
     PlatformServiceProvider::class,
     ArsipServiceProvider::class,
     SdmServiceProvider::class,
+    LayananServiceProvider::class,
 ];

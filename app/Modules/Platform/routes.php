@@ -2,12 +2,21 @@
 
 use App\Modules\Platform\Http\Controllers\AuditLogController;
 use App\Modules\Platform\Http\Controllers\EmployeeController;
+use App\Modules\Platform\Http\Controllers\NotificationController;
 use App\Modules\Platform\Http\Controllers\NumberingFormatController;
 use App\Modules\Platform\Http\Controllers\OrgUnitController;
 use App\Modules\Platform\Http\Controllers\PositionController;
 use App\Modules\Platform\Http\Controllers\UserRoleController;
 use App\Modules\Platform\Http\Middleware\EnsurePlatformAdmin;
 use Illuminate\Support\Facades\Route;
+
+// Notifikasi Terpadu (Untuk seluruh pegawai / pengguna aktif dengan rate-limiting)
+Route::middleware(['web', 'auth', 'throttle:60,1'])->group(function () {
+    Route::get('/notifications/feed', [NotificationController::class, 'feed'])->name('notifications.feed');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllRead'])->name('notifications.read-all');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+});
 
 Route::middleware(['web', 'auth', 'must.change.password', EnsurePlatformAdmin::class])->prefix('platform')->name('platform.')->group(function () {
     // 6.1 Unit Organisasi

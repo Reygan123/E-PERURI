@@ -135,6 +135,13 @@ class NumberingFormatSeeder extends Seeder
                 'reset_period' => 'yearly',
                 'prefix' => 'IT',
             ],
+            [
+                'code' => 'WO_IT',
+                'module' => 'layanan',
+                'template' => 'IT{SEQ}',
+                'reset_period' => 'yearly',
+                'prefix' => 'IT',
+            ],
         ];
 
         foreach ($formats as $f) {

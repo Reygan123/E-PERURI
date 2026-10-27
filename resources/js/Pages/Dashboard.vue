@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppBadge from '@/Components/AppBadge.vue';
 import AppLogo from '@/Components/AppLogo.vue';
+import NotificationDropdown from '@/Components/NotificationDropdown.vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from 'vue';
 
@@ -178,15 +179,18 @@ const apps = [
         subtitle: 'Layanan Umum & IT Support',
         category: 'Layanan Fasilitas',
         desc: 'Pengajuan tiket gangguan perangkat, pemeliharaan IT, serta pengelolaan fasilitas operasional perusahaan.',
-        status: 'roadmap',
-        statusLabel: 'Roadmap',
-        stageLabel: 'Tahap 2',
-        colorHeader: 'bg-[#0284C7] text-white',
-        colorBottom: 'text-[#0284C7] border-[#0284C7]/20 hover:bg-sky-50/50',
-        buttonLabel: 'Segera Hadir',
+        status: 'active',
+        statusLabel: 'Aktif',
+        colorHeader: 'bg-ptkp-deep text-white',
+        colorBottom: 'text-ptkp-navy border-ptkp-navy/20 hover:bg-ptkp-mist',
+        buttonLabel: 'Buka Work Order',
         iconType: 'desktop',
-        href: '#',
+        href: '/layanan/work-orders',
         isExternal: false,
+        quickLinks: [
+            { label: 'Papan Antrean', href: '/layanan/work-orders' },
+            { label: 'Ajukan Tiket Baru', href: '/layanan/work-orders/create' },
+        ],
     },
     {
         id: 'lms',
@@ -294,6 +298,8 @@ const handleAppClick = (app: (typeof apps)[0]) => {
 
                 <!-- User profile & actions -->
                 <div class="relative flex items-center gap-3">
+                    <NotificationDropdown />
+
                     <button
                         type="button"
                         class="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1 text-white transition-colors hover:bg-white/10"

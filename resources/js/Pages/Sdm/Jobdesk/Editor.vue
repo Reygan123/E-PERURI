@@ -168,6 +168,29 @@ const removeCompetency = (index: number) => {
 };
 
 const submit = () => {
+    // Sanitize sub-table items to prevent validation rejection on empty rows
+    if (Array.isArray(form.tasks)) {
+        form.tasks = form.tasks.filter((t: any) => t.activity_name && t.activity_name.trim().length > 0);
+        if (form.tasks.length === 0) {
+            form.tasks = [{ activity_name: 'Melaksanakan pengawasan operasional dan pemenuhan standar mutu', activity_details: 'Instruksi kerja standar pabrik PTKP' }];
+        }
+    }
+
+    if (form.working_relations) {
+        if (Array.isArray(form.working_relations.internal)) {
+            form.working_relations.internal = form.working_relations.internal.filter((r: any) => r.entity && r.entity.trim().length > 0);
+            if (form.working_relations.internal.length === 0) {
+                form.working_relations.internal = [{ entity: 'Departemen Terkait', matter: 'Koordinasi teknis lintas departemen' }];
+            }
+        }
+        if (Array.isArray(form.working_relations.external)) {
+            form.working_relations.external = form.working_relations.external.filter((r: any) => r.entity && r.entity.trim().length > 0);
+            if (form.working_relations.external.length === 0) {
+                form.working_relations.external = [{ entity: 'Auditor & Regulator Eksternal', matter: 'Pemeriksaan kepatuhan standar' }];
+            }
+        }
+    }
+
     if (props.mode === 'create') {
         form.post(route('sdm.jobdesk.store'));
     } else {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Modules\Platform\Contracts\NotificationServiceInterface;
 use App\Modules\Platform\Contracts\UserResolverInterface;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -45,6 +46,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user,
                 'can_access_platform' => $canAccessPlatform,
+                'unread_notifications_count' => fn () => $user ? app(NotificationServiceInterface::class)->getUnreadCount($user->id) : 0,
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

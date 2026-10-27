@@ -25,6 +25,9 @@ const isPlatformWorkspace = computed(() =>
     currentUrl.value.startsWith('/platform'),
 );
 const isSdmWorkspace = computed(() => currentUrl.value.startsWith('/sdm'));
+const isLayananWorkspace = computed(() =>
+    currentUrl.value.startsWith('/layanan'),
+);
 
 const canAccessPlatform = computed(() =>
     Boolean((page.props.auth as any)?.can_access_platform),
@@ -147,7 +150,7 @@ const handleNavClick = () => {
             <template
                 v-if="
                     isArsipWorkspace ||
-                    (!isPlatformWorkspace && !isArsipWorkspace && !isSdmWorkspace)
+                    (!isPlatformWorkspace && !isArsipWorkspace && !isSdmWorkspace && !isLayananWorkspace)
                 "
             >
                 <!-- App Title Badge -->
@@ -770,6 +773,112 @@ const handleNavClick = () => {
 
                 <!-- Switchers to other workspaces -->
                 <div class="mt-auto border-t border-white/10 pt-2 flex flex-col gap-1.5">
+                    <Link
+                        href="/arsip/surat-masuk"
+                        class="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 font-body text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                        @click="handleNavClick"
+                    >
+                        <span>Beralih ke E-Arsip</span>
+                        <span>&rarr;</span>
+                    </Link>
+
+                    <Link
+                        v-if="canAccessPlatform"
+                        href="/platform/org-units"
+                        class="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 font-body text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                        @click="handleNavClick"
+                    >
+                        <span>Beralih ke Platform Inti</span>
+                        <span>&rarr;</span>
+                    </Link>
+                </div>
+            </template>
+
+            <!-- ========================================== -->
+            <!-- WORKSPACE 4: LAYANAN IT (SI-WOPPIT)        -->
+            <!-- ========================================== -->
+            <template v-else-if="isLayananWorkspace">
+                <!-- App Title Badge -->
+                <div
+                    class="flex items-center justify-between rounded-md border border-white/10 bg-white/5 px-2 py-1.5"
+                >
+                    <div class="flex items-center gap-2">
+                        <span class="h-2 w-2 rounded-full bg-sky-400"></span>
+                        <span
+                            class="font-heading text-xs font-bold tracking-wider text-white"
+                            >LAYANAN IT (WOPPIT)</span
+                        >
+                    </div>
+                    <AppBadge variant="violet" size="sm">Work Order</AppBadge>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <span
+                        class="px-2.5 pb-1 font-heading text-[11px] font-bold tracking-wider text-white/50"
+                    >
+                        ANTREAN & PENANGANAN IT
+                    </span>
+
+                    <AppNavItem
+                        href="/layanan/work-orders"
+                        :active="isItemActive('/layanan/work-orders') && currentUrl !== '/layanan/work-orders/create'"
+                        @click="handleNavClick"
+                    >
+                        <template #icon>
+                            <svg
+                                class="h-4 w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.8"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                />
+                            </svg>
+                        </template>
+                        Papan Antrean IT
+                    </AppNavItem>
+
+                    <AppNavItem
+                        href="/layanan/work-orders/create"
+                        :active="isItemActive('/layanan/work-orders/create')"
+                        @click="handleNavClick"
+                    >
+                        <template #icon>
+                            <svg
+                                class="h-4 w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.8"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 4.5v15m7.5-7.5h-15"
+                                />
+                            </svg>
+                        </template>
+                        Ajukan Permohonan IT
+                    </AppNavItem>
+                </div>
+
+                <!-- Switchers to other workspaces -->
+                <div class="mt-auto border-t border-white/10 pt-2 flex flex-col gap-1.5">
+                    <Link
+                        href="/sdm/jobdesk"
+                        class="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 font-body text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                        @click="handleNavClick"
+                    >
+                        <span>Direktori Jobdesk (SDM)</span>
+                        <span>&rarr;</span>
+                    </Link>
+
                     <Link
                         href="/arsip/surat-masuk"
                         class="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 font-body text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
